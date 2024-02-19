@@ -1,0 +1,14 @@
+org/expand/ExpandFSInputStream.class
+org/expand/testExpandToPosix.class
+org/expand/testSparkExpand.class
+org/expand/Stat.class
+org/expand/testExpand.class
+org/expand/ExpandToPosix.class
+org/expand/ExpandInputChannel.class
+org/expand/ExpandFlags.class
+org/expand/ExpandOutputChannel.class
+org/expand/ExpandInputStream.class
+org/expand/ExpandRecordReader.class
+org/expand/Expand.class
+org/expand/ExpandOutputStream.class
+org/expand/ExpandInputFormat.class
