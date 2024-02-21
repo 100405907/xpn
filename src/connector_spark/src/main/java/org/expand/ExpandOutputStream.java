@@ -18,7 +18,12 @@ public class ExpandOutputStream extends OutputStream {
 		this.xpn = new ExpandToPosix();
 		this.flags = xpn.jni_xpn_createFlags();
 		this.path = path;
-		int fd = xpn.jni_xpn_creat(path, flags.S_IRWXU | flags.S_IRWXG | flags.S_IRWXO);
+		int fd;
+		if (append){
+			fd = xpn.jni_xpn_open(path, flags.O_RDWR | flags.O_APPEND);
+		}else {
+			fd = xpn.jni_xpn_creat(path, flags.S_IRWXU | flags.S_IRWXG | flags.S_IRWXO);
+		}
 		this.out = new ExpandOutputChannel(fd, bufsize);
 	}
 
@@ -40,12 +45,16 @@ public class ExpandOutputStream extends OutputStream {
 		if (out == null) return;
 		if (b == null) return;
 		if (off < 0 || len < 0 || (off + len) > b.length) return;
-		out.write(ByteBuffer.wrap(b, off, len));
+		System.out.println("BYTES WR: " + out.write(ByteBuffer.wrap(b, off, len)));
 	}
 
 	@Override
 	public void write(byte b[]){
-		if (out == null) return;
+		if (out == null) {
+			System.out.println("BYTE ARRAY NULL");
+			return;
+		}
+		System.out.println(new String(b));
 		write(b, 0, b.length);
 	}
 

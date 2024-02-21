@@ -23,7 +23,6 @@ import org.apache.hadoop.conf.Configuration;
 import java.net.URI;
 
 public class testSparkExpand{
-	private static final Pattern SPACE = Pattern.compile(" ");
         public static void main(String[] args) {
 
 		JavaSparkContext sc = new JavaSparkContext(new SparkConf().setAppName("wc")
@@ -34,37 +33,11 @@ public class testSparkExpand{
 			.config("spark.hadoop.fs.defaultFS", "xpn:///")
                         .config("spark.hadoop.fs.xpn.impl", "org.expand.Expand")
 			.getOrCreate();
-		
-		//Expand xpn = null;
-		//Configuration conf = null;
-		//byte b[] = new byte[524288];
-        	String filePath = "xpn:///xpn/newtestwrfile.txt";
-		//FSDataInputStream in = null;
-		/*try{	
-		xpn = new Expand();
-                conf = new Configuration();
-                URI uri = URI.create("xpn:///");
-                conf.set("fs.defaultFS", "xpn:///");
-                conf.set("fs.xpn.impl", "Expand");
-                xpn.initialize(uri, conf);
 
-		in = xpn.open(new Path(filePath), 65536);
-		in.read(b, 0, b.length);
-
-		}catch (Exception e){
-			System.out.println(e);
-		}
+		Configuration xpnconf = sc.hadoopConfiguration();
 		
-		String str[] = new String(b).split(" ");
-		List<String> blist = Arrays.asList(str);
-		JavaRDD<String> lines = sc.parallelize(blist);*/
-		//JavaRDD<Row> lines = spark.read().format("binaryFile").load(filePath).javaRDD();
-		//System.out.println(lines.collect());
-		/*String arr [] = {"hola", "hola", "hola"};
-		List<String> l = Arrays.asList(arr);
-		JavaRDD<String> rdd = sc.parallelize(l);
-*/
-		//System.out.println("HADOOP CONFIGURATION SENT: " + sc.hadoopConfiguration());
+        String filePath = "xpn:///xpn/quixote";
+
 		JavaPairRDD<LongWritable, Text> rdd = sc.newAPIHadoopFile(
             		filePath,
             		ExpandInputFormat.class,
@@ -75,14 +48,25 @@ public class testSparkExpand{
 
 		JavaRDD<String> lines = rdd.map(tuple -> tuple._2().toString());
 
-//		JavaRDD<String> lines = sc.textFile(filePath);
-		System.out.println(lines.collect());
+		JavaRDD<String> words = lines.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
-    		//JavaRDD<String> words = lines.flatMap(s -> Arrays.asList(SPACE.split(s)).iterator());
+		JavaPairRDD<String, Integer> ones = words.mapToPair(s -> new Tuple2<>(s, 1));
 
-    		//JavaPairRDD<String, Integer> ones = words.mapToPair(s -> new Tuple2<>(s, 1));
+		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2);
+		
+		List<Tuple2<Text, LongWritable>> finalCounts = counts.mapToPair(pair -> new Tuple2<>(new Text(pair._1()), new LongWritable(pair._2().longValue()))).collect();
 
-    		//JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2);
-        	sc.stop();
+		// xpnconf.set("xpn.output.path", "xpn:///xpn/wc-quixote");
+
+		// for (JavaPairRDD<Text, LongWritable> result : finalCounts){
+		// 	result.saveAsNewAPIHadoopFile (
+		// 		"xpn:///xpn/wc-quixote",
+		// 		Text.class,
+		// 		LongWritable.class,
+		// 		ExpandOutputFormat.class
+		// 	);
+		// }
+        
+		sc.stop();
 	}
 }

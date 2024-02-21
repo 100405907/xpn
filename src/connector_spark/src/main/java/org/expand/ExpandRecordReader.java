@@ -32,10 +32,8 @@ public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
         end = start + fileSplit.getLength();
         pos = start;
         Path file = fileSplit.getPath();
-	System.out.println("RUTA EN RECORDREADER: " + file.toString());
         xpn = new Expand();
-        System.out.println("SALGO DE EXPAND()");
-	fsin = xpn.open(file);
+	    fsin = xpn.open(file);
         fsin.seek(start);
     }
 
@@ -77,7 +75,7 @@ public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
     public void close() throws IOException {
         if (fsin != null) {
             fsin.close();
-	    //xpn.close();
+            //xpn.close();
         }
     }
 }

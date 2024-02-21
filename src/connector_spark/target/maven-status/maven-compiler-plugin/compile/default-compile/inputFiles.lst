@@ -3,9 +3,12 @@
 /home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/ExpandInputChannel.java
 /home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/testExpandToPosix.java
 /home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/ExpandFlags.java
+/home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/ExpandOutputFormat.java
 /home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/ExpandToPosix.java
 /home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/testSparkExpand.java
 /home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/Expand.java
+/home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/ExpandRecordWriter.java
+/home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/ExpandOutputCommitter.java
 /home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/ExpandOutputStream.java
 /home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/ExpandFSInputStream.java
 /home/lab/src/xpn/src/connector_spark/src/main/java/org/expand/ExpandRecordReader.java

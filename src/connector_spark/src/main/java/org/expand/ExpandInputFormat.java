@@ -14,13 +14,11 @@ public class ExpandInputFormat extends FileInputFormat<LongWritable, Text> {
 
     @Override
     public RecordReader<LongWritable, Text> createRecordReader(InputSplit split, TaskAttemptContext context) throws IOException, InterruptedException {
-            System.out.println("LLEGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 	    return new ExpandRecordReader();
     }
 
     @Override
     protected boolean isSplitable(JobContext context, Path file) {
-	    System.out.println("SPLIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIT " + file.toString());
         return super.isSplitable(context,file);
     }
 }
