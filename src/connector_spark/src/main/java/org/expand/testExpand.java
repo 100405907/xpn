@@ -13,15 +13,18 @@ public class testExpand{
 
         public static void main(String[] args) {
 
-		byte bw [] = new byte [65536];
-		byte br [] = new byte [65536];
-		for (int i = 0; i < bw.length; i++){
-			if (i % 5 == 0) bw[i] = 'h';
-			else if (i % 5 == 1) bw[i] = 'o';
-			else if (i % 5 == 2) bw[i] = 'l';
-			else if (i % 5 == 3) bw[i] = 'a';
-			else if (i % 5 == 4) bw[i] = ' ';
-		}
+		// byte bw [] = new byte [65536];
+		// byte br [] = new byte [65536];
+		// for (int i = 0; i < bw.length; i++){
+		// 	if (i % 5 == 0) bw[i] = 'h';
+		// 	else if (i % 5 == 1) bw[i] = 'o';
+		// 	else if (i % 5 == 2) bw[i] = 'l';
+		// 	else if (i % 5 == 3) bw[i] = 'a';
+		// 	else if (i % 5 == 4) {
+		// 		if (i % 28 == 0) bw[i] = '\n';
+		// 		else bw[i] = ' ';
+		// 	}
+		// }
 
 		try{
 		Expand xpn = new Expand();
@@ -30,16 +33,18 @@ public class testExpand{
         	conf.set("fs.defaultFS", "xpn:///");
         	conf.set("fs.xpn.impl", "Expand");
 		xpn.initialize(uri, conf);
+		System.out.println("ANTES DE COPY");
+		xpn.loadFileToExpand(conf, new Path("file:///home/lab/data/2000-0.txt"), new Path("xpn:///xpn/quixote"));
 
-		xpn.delete(new Path("/xpn/testresults"), true);
-		xpn.delete(new Path("/xpn/newtestwrfile.txt"), false);
-		FSDataOutputStream out = xpn.create(new Path ("/xpn/newtestwrfile.txt"), FsPermission.getFileDefault(),
-            	true, 4096, (short) 0, (long) 4096, null);
-		out.write(bw);
-		out.close();
-		xpn.close();
+		// xpn.delete(new Path("/xpn/testresults"), true);
+		// xpn.delete(new Path("/xpn/newtestwrfile"), false);
+		// FSDataOutputStream out = xpn.create(new Path ("/xpn/newtestwrfile"), FsPermission.getFileDefault(),
+        //     	true, 4096, (short) 0, (long) 4096, null);
+		// out.write(bw);
+		// out.close();
+		// xpn.close();
 		}catch (Exception e){
-			System.out.println(e);
+		 	System.out.println(e);
 		}
 	}
 }

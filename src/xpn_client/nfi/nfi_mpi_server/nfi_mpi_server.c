@@ -19,7 +19,6 @@
  *
  */
 
-
 /* ... Include / Inclusion ........................................... */
 
 #include "nfi_mpi_server.h"

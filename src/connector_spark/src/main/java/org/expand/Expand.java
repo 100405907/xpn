@@ -62,10 +62,28 @@ public class Expand extends FileSystem {
 
 	public void close() throws IOException {
 		System.out.println("------------------ENTRO A CLOSE------------------");
-		super.close();
 		this.xpn.jni_xpn_destroy();
+		super.close();
 		System.out.println("------------------SALGO DE CLOSE------------------");
 	}
+
+	public void loadFileToExpand(Configuration conf, Path src, Path dst) throws IOException {
+    	FSDataInputStream is = null;
+    	FSDataOutputStream os = null;
+		try {
+			FileSystem fs = src.getFileSystem(conf);
+			is = fs.open(src, 4096);
+			os = create(dst, FsPermission.getFileDefault(), true, 4096, (short) 0, (long) 4096, null);
+			byte[] buffer = new byte[1024];
+			int length;
+			while ((length = is.read(buffer)) > 0) {
+				os.write(buffer, 0, length);
+			}
+		} finally {
+			is.close();
+			os.close();
+		}
+  	}
 
 	@Override
 	public FileStatus getFileStatus (Path path){
@@ -189,20 +207,32 @@ public class Expand extends FileSystem {
 	}
 
 	@Override
-    	public FSDataOutputStream append(Path f, int bufferSize,
-            Progressable progress){
+	public FSDataOutputStream append(Path f, int bufferSize,
+			Progressable progress){
 		System.out.println("------------------ENTRO A APPEND------------------");
 		f = removeURI(f);
-		if (!exists(f)) return null;
+		if (!exists(f)) {
+			try{
+				return create(f);
+			}catch (Exception e){
+				System.out.println(e);
+				return null;
+			}
+		}
 		System.out.println("------------------SALGO DE APPEND------------------");
 		return new FSDataOutputStream(new ExpandOutputStream(f.toString(), bufsize, (short) 0,
                                         blksize, true), statistics);
 	}
 
 	@Override
-    	public FSDataOutputStream create(Path f, FsPermission permission,
-            boolean overwrite, int bufferSize, short replication,
-            long blockSize, Progressable progress) throws IOException {
+	public FSDataOutputStream append(Path f) throws IOException {
+		return append(f, 4096, null);
+	}
+
+	@Override
+	public FSDataOutputStream create(Path f, FsPermission permission,
+			boolean overwrite, int bufferSize, short replication,
+		long blockSize, Progressable progress) throws IOException {
 		System.out.println("------------------ENTRO A CREATE------------------");
 		f = removeURI(f);
 		Path parent = f.getParent();
@@ -216,6 +246,11 @@ public class Expand extends FileSystem {
 
 		return new FSDataOutputStream(new ExpandOutputStream(f.toString(), bufsize, replication, 
 					blksize, false), statistics);
+	}
+
+	@Override
+	public FSDataOutputStream create(Path f) throws IOException {
+		return create(f, FsPermission.getFileDefault(), true, 4096, (short) 0, (long) 4096, null);
 	}
 
 	@Override
