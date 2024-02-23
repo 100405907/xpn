@@ -18,7 +18,6 @@
  *  along with Expand.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
 /* ... Include / Inclusion ........................................... */
 
 #include "nfi/nfi_worker.h"

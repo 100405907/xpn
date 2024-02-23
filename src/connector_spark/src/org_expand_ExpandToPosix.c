@@ -154,7 +154,7 @@ JNIEXPORT jint JNICALL Java_org_expand_ExpandToPosix_jni_1xpn_1creat
 
 JNIEXPORT jint JNICALL Java_org_expand_ExpandToPosix_jni_1xpn_1destroy
   (JNIEnv *env, jobject obj){
-        return xpn_destroy();
+    return xpn_destroy();
 }
 
 JNIEXPORT jobject JNICALL Java_org_expand_ExpandToPosix_jni_1xpn_1fstat

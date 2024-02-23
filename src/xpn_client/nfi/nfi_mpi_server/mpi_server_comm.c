@@ -20,7 +20,7 @@
  */
 
 /* ... Include / Inclusion ........................................... */
-
+#define DEBUG
 #include "mpi_server_comm.h"
 
 
@@ -268,7 +268,7 @@ int mpi_client_comm_connect ( mpi_client_param_st *params )
 
 int mpi_client_comm_disconnect ( mpi_client_param_st *params )
 {
-  int ret;
+  int ret, size;
 
   debug_info("[MPI_CLIENT_COMM] [mpi_client_comm_disconnect] >> Begin\n");
 
@@ -284,8 +284,8 @@ int mpi_client_comm_disconnect ( mpi_client_param_st *params )
   
   // Disconnect
   debug_info("[MPI_CLIENT_COMM] [mpi_client_comm_disconnect] Disconnect\n");
-
-  ret = MPI_Comm_disconnect(&(params->server));
+  ret = MPI_Comm_free(&(params->server));
+  // ret = MPI_Comm_disconnect(&(params->server));
   if (MPI_SUCCESS != ret)
   {
     printf("[MPI_CLIENT_COMM] [mpi_client_comm_disconnect] ERROR: MPI_Comm_disconnect fails\n");

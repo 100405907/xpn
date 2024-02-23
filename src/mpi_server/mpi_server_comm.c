@@ -21,7 +21,7 @@
 
 
 /* ... Include / Inclusion ........................................... */
-
+#define DEBUG
 #include "mpi_server_comm.h"
 
 
@@ -354,11 +354,11 @@ int mpi_server_comm_disconnect ( MPI_Comm fd )
     printf("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_disconnect] ERROR: The MPI_Comm is NULL\n", -1);
     return 1;
   }
-
+  
   // Disconnect
   debug_info("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_disconnect] Disconnect\n", -1);
-
-  ret = MPI_Comm_disconnect(&fd);
+  ret = MPI_Comm_free(&fd);
+  // ret = MPI_Comm_disconnect(&fd);
   if (MPI_SUCCESS != ret)
   {
     printf("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_disconnect] ERROR: MPI_Comm_disconnect fails\n", -1);

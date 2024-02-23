@@ -41,7 +41,7 @@ public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
     public boolean nextKeyValue() throws IOException, InterruptedException {
         if (pos < end) {
             key.set(pos);
-	    byte[] buffer = new byte[bufsize];
+	        byte[] buffer = new byte[bufsize];
             int bytesRead = fsin.read(buffer);
             if (bytesRead > 0) {
                 value.set(new String(buffer, 0, bytesRead));
@@ -75,7 +75,7 @@ public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
     public void close() throws IOException {
         if (fsin != null) {
             fsin.close();
-            //xpn.close();
+            xpn.close();
         }
     }
 }

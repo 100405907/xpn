@@ -1,29 +1,42 @@
-
 #include "all_system.h"
 #include "xpn.h"
 #include <sys/time.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
 
+// void *startstop(void *threadid){
+// 	int ret;
+// 	long tid = (long)threadid;
+// 	//xpn-init
+// 	ret = xpn_init();
+// 	printf("%d = xpn_init() %ld\n", ret, tid);
+// 	sleep(10);
+// 	// xpn-destroy
+// 	ret = xpn_destroy();
+// 	printf("%d = xpn_destroy() %ld\n", ret, tid);
+// 	pthread_exit(NULL);
+// }
 
-#define KB  (1024)
-
-#define BUFF_SIZE (1*MB)
-char buffer[BUFF_SIZE] ;
-
-
-double get_time(void)
-{
-    struct timeval tp;
-    struct timezone tzp;
-
-    gettimeofday(&tp,&tzp);
-    return((double) tp.tv_sec + .000001 * (double) tp.tv_usec);
+void startstop(int pid){
+	int ret;
+	//xpn-init
+	ret = xpn_init();
+	printf("%d = xpn_init() %d\n", ret, pid);
+	sleep(10);
+	// xpn-destroy
+	ret = xpn_destroy();
+	printf("%d = xpn_destroy() %d\n", ret, pid);
+	pthread_exit(NULL);
 }
-
 
 int main ( int argc, char *argv[] )
 {
-	int    ret, fd1 ;
-	double t_bc, t_ac, t_bw, t_aw ;
+	int    ret, rc, status;
+	pid_t pid;
+	pthread_t threads[5];
 
         if (argc < 3)
 	{
@@ -36,51 +49,51 @@ int main ( int argc, char *argv[] )
 	    return -1 ;
 	}	
 
-	// xpn-init
-	ret = xpn_init();
-	printf("%d = xpn_init()\n", ret);
-	if (ret < 0) {
-	    return -1;
+	// for (int i = 0; i < 5; i++) {
+    //     pid = fork();
+    //     if (pid < 0) {
+    //         // Error al crear el proceso hijo
+    //         perror("fork");
+    //         exit(EXIT_FAILURE);
+    //     } else if (pid == 0) {
+    //         // Proceso hijo
+    //         startstop(i);
+    //         exit(EXIT_SUCCESS);
+    //     } else {
+    //         // Proceso padre
+    //         printf("Created process with ID: %d\n", pid);
+    //     }
+    // }
+    // // Esperamos a que todos los procesos hijos terminen
+    // for (int i = 0; i < 5; i++) {
+    //     wait(&status);
+    // }
+
+	for (long i = 0; i < 5; i++){
+		rc = pthread_create(&threads[i], NULL, startstop, (void *)i);
 	}
 
-	memset(buffer, 'a', BUFF_SIZE) ;
-	printf("memset(buffer, 'a', %d)\n", BUFF_SIZE) ;
-
-	// xpn-creat
-	t_bc = get_time();
-
-	fd1 = xpn_creat(argv[1], 00777);
-	if (fd1 < 0) {
-	    printf("%d = xpn_creat('%s', %o)\n", ret, argv[1], 00777) ;
-	    return -1 ;
+	for (long i = 0; i < 5; i++){
+		pthread_join(threads[i], NULL);
 	}
 
-	t_bw = get_time();
+	pthread_exit(NULL);
 
-	// xpn-write
-        long mb = atoi(argv[2]) ;
-	for (int i = 0; i < mb; i++)
-	{
-	     ret = xpn_write(fd1, buffer, BUFF_SIZE);
-	  // printf("%d = xpn_write_%d(%d, %p, %lu)\n", ret, i, fd1, buffer, (unsigned long)BUFF_SIZE);
-	}
-	
-	t_aw = get_time() - t_bw;
+	// for (int i = 0; i < 5; i++){
+	// 	// xpn-init
+	// 	ret = xpn_init();
+	// 	printf("%d = xpn_init()\n", ret);
+	// 	if (ret < 0) {
+	// 		return -1;
+	// 	}
 
-	ret = xpn_close(fd1);
-     // printf("%d = xpn_close(%d)\n", ret, fd1) ;
-
-	t_ac = get_time() - t_bc;
-
-	printf("Bytes (KiB); Total time (ms); Read time (ms)\n") ;
-	printf("%f;%f;%f\n", ((double)mb * (double)BUFF_SIZE) / ((double)KB), t_ac * 1000, t_aw * 1000) ;
-
-	// xpn-destroy
-	ret = xpn_destroy();
-	printf("%d = xpn_destroy()\n", ret);
-	if (ret < 0) {
-	    return -1;
-	}
+	// 	// xpn-destroy
+	// 	ret = xpn_destroy();
+	// 	printf("%d = xpn_destroy()\n", ret);
+	// 	if (ret < 0) {
+	// 		return -1;
+	// 	}
+	// }
 
 	return 0;
 }
