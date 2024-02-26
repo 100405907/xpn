@@ -18,7 +18,7 @@
  *  along with Expand.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#define DEBUG
+
 /* ... Include / Inclusion ........................................... */
 
 #include "all_system.h"

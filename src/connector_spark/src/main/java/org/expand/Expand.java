@@ -39,7 +39,6 @@ public class Expand extends FileSystem {
 	public Expand(){
 		System.out.println("ENTRO AL CONSTRUCTOR");
 		this.xpn = new ExpandToPosix();
-		this.xpn.jni_xpn_init();
 		System.out.println("DESPUES DE XPN INIT");
 		this.uri = URI.create("xpn:///");
 		this.setWorkingDirectory(new Path("/xpn"));
@@ -52,6 +51,7 @@ public class Expand extends FileSystem {
 		try{
 		if (initialized) return;
 		super.initialize(getUri(), conf);
+		this.xpn.jni_xpn_init();
 		this.initialized = true;
 		}catch(Exception e){
 			System.out.println("Excepcion en INITIALIZE: " + e);

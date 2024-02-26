@@ -1,6 +1,5 @@
 package org.expand;
 
-import org.apache.hadoop.conf.Configuration;
 import org.expand.Expand;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapred.JobConf;
@@ -23,11 +22,8 @@ public class ExpandOutputFormat extends FileOutputFormat<Text, IntWritable> {
     
     @Override
     public RecordWriter<Text, IntWritable> getRecordWriter(TaskAttemptContext job) throws IOException, InterruptedException {
-        Configuration conf = job.getConfiguration();
-        Expand xpn = new Expand();
-        xpn.initialize(URI.create("xpn:///"), conf);
-        Path out = new Path(conf.get(OUTPUT_PATH_KEY));
-        return new ExpandRecordWriter(conf, out);
+        Path out = new Path(job.getConfiguration().get(OUTPUT_PATH_KEY));
+        return new ExpandRecordWriter(job.getConfiguration(), out);
     }
 
     @Override
@@ -37,8 +33,7 @@ public class ExpandOutputFormat extends FileOutputFormat<Text, IntWritable> {
 
     @Override
     public OutputCommitter getOutputCommitter(TaskAttemptContext context) throws IOException {
-        Configuration conf = context.getConfiguration();
-        Path outputPath = new Path(conf.get(OUTPUT_PATH_KEY));
+        Path outputPath = new Path(context.getConfiguration().get(OUTPUT_PATH_KEY));
         return new ExpandOutputCommitter(outputPath, context);
     }
 }

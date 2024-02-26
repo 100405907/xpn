@@ -21,7 +21,7 @@ public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
     private long start;
     private long end;
     private long pos;
-    Expand xpn;
+    // private Expand xpn;
     private FSDataInputStream fsin;
     private static final int bufsize = 65536;
 
@@ -32,8 +32,7 @@ public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
         end = start + fileSplit.getLength();
         pos = start;
         Path file = fileSplit.getPath();
-        xpn = new Expand();
-	    fsin = xpn.open(file);
+	    fsin = file.getFileSystem(context.getConfiguration()).open(file);
         fsin.seek(start);
     }
 
@@ -75,7 +74,6 @@ public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
     public void close() throws IOException {
         if (fsin != null) {
             fsin.close();
-            xpn.close();
         }
     }
 }
