@@ -211,14 +211,7 @@ public class Expand extends FileSystem {
 			Progressable progress){
 		System.out.println("------------------ENTRO A APPEND------------------");
 		f = removeURI(f);
-		if (!exists(f)) {
-			try{
-				return create(f);
-			}catch (Exception e){
-				System.out.println(e);
-				return null;
-			}
-		}
+		if (!exists(f)) xpn.jni_xpn_creat(f.toString(), flags.S_IRWXU | flags.S_IRWXG | flags.S_IRWXO);
 		System.out.println("------------------SALGO DE APPEND------------------");
 		return new FSDataOutputStream(new ExpandOutputStream(f.toString(), bufsize, (short) 0,
                                         blksize, true), statistics);
