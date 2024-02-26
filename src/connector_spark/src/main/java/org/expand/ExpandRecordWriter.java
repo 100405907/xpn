@@ -13,15 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 public class ExpandRecordWriter extends RecordWriter<Text, IntWritable> {
-    private Expand xpn;
     private Path outputPath;
-    FSDataOutputStream out;
+    private FSDataOutputStream out;
 
     public ExpandRecordWriter(Configuration conf, Path outputPath) throws IOException {
-        this.xpn = new Expand();
-        xpn.initialize(URI.create("xpn:///"), conf);
         this.outputPath = outputPath;
-        out = xpn.append(outputPath);
+        this.out = outputPath.getFileSystem(conf).append(outputPath);
     }
 
     @Override
@@ -30,11 +27,11 @@ public class ExpandRecordWriter extends RecordWriter<Text, IntWritable> {
         out.write(towr.getBytes());
     }
 
-    public void write(List<Tuple2<Text, IntWritable>> tuples) throws IOException, InterruptedException{
+    public void write(Tuple2<Text, IntWritable> [] tuples) throws IOException, InterruptedException{
         
         for (Tuple2<Text, IntWritable> tuple : tuples){
             if (tuple._2().get() > 1){
-                String towr = "{key: " + tuple._1().toString() + ", value: " + tuple._2().toString() + "}\n";
+                String towr = "{key: " + tuple._1().toString() + ", value: " + tuple._2().toString() + "} ";
                 out.write(towr.getBytes());
             }
         }

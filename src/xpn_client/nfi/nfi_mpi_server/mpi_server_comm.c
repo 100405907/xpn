@@ -20,7 +20,6 @@
  */
 
 /* ... Include / Inclusion ........................................... */
-#define DEBUG
 #include "mpi_server_comm.h"
 
 
