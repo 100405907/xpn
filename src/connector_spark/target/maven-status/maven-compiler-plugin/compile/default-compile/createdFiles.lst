@@ -13,5 +13,4 @@ org/expand/ExpandInputStream.class
 org/expand/ExpandRecordReader.class
 org/expand/Expand.class
 org/expand/ExpandOutputStream.class
-org/expand/ExpandOutputCommitter.class
 org/expand/ExpandInputFormat.class

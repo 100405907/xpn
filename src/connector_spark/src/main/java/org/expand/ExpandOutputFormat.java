@@ -25,15 +25,4 @@ public class ExpandOutputFormat extends FileOutputFormat<Text, IntWritable> {
         Path out = new Path(job.getConfiguration().get(OUTPUT_PATH_KEY));
         return new ExpandRecordWriter(job.getConfiguration(), out);
     }
-
-    @Override
-    public void checkOutputSpecs(JobContext job) throws IOException {
-        
-    }
-
-    @Override
-    public OutputCommitter getOutputCommitter(TaskAttemptContext context) throws IOException {
-        Path outputPath = new Path(context.getConfiguration().get(OUTPUT_PATH_KEY));
-        return new ExpandOutputCommitter(outputPath, context);
-    }
 }
