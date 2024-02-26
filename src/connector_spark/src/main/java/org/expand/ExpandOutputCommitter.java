@@ -19,12 +19,7 @@ public class ExpandOutputCommitter extends OutputCommitter {
 
     @Override
     public void commitJob(JobContext context) throws IOException {
-        Configuration conf = context.getConfiguration();
-        Expand xpn = new Expand();
-        xpn.initialize(URI.create("xpn:///"), conf);
-
-        Path successFile = new Path(outputPath, "_SUCCESS");
-        xpn.create(successFile).close();
+        
     }
 
     @Override
