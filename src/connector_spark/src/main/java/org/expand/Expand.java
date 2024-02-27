@@ -49,7 +49,7 @@ public class Expand extends FileSystem {
 	public void initialize(URI uri, Configuration conf) throws IOException {
 		System.out.println("------------------ENTRO A INITIALIZE------------------");
 		try{
-		if (this.initialized) return;
+		//if (this.initialized) return;
 		super.initialize(getUri(), conf);
 		this.xpn.jni_xpn_init();
 		this.initialized = true;
@@ -284,6 +284,7 @@ public class Expand extends FileSystem {
 
 	public boolean exists (Path path){
 		System.out.println("------------------ENTRO A EXISTS------------------");
+		this.xpn.jni_xpn_init();
 		System.out.println("EXPAND INICIALIZADO EN EXIST ----------------- " + this.initialized);
 		path = removeURI(path);
 		Stat stats = this.xpn.jni_xpn_stat(path.toString());
