@@ -18,7 +18,7 @@
  *  along with Expand.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
+#define DEBUG
 /* ... Include / Inclusion ........................................... */
 
 #include "all_system.h"
@@ -263,10 +263,10 @@ int mpi_server_up ( void )
     case MPI_SOCKET_ACCEPT:
       mpi_server_accept();
       break;
-    case MPI_SOCKET_FINISH:
-      mpi_server_finish();
-      the_end = 1;
-      break;
+    // case MPI_SOCKET_FINISH:
+    //   mpi_server_finish();
+    //   the_end = 1;
+    //   break;
     default:
       perror("read");
       break;
