@@ -204,7 +204,7 @@ int mpi_server_comm_init ( mpi_server_param_st *params )
 int mpi_server_comm_destroy ( mpi_server_param_st *params )
 {
   int ret;
-
+  printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>MPI_SERVER_COMM_DESTROY<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
   debug_info("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_destroy] >> Begin\n", params->rank);
 
   // Close port
@@ -496,7 +496,7 @@ ssize_t mpi_server_comm_read_data ( mpi_server_param_st *params, MPI_Comm fd, ch
 
   // Get message
   debug_info("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_read_data] Read data\n", params->rank);
-
+  
   ret = MPI_Recv(data, size, MPI_CHAR, rank_client_id, tag_client_id, fd, &status);
   if (MPI_SUCCESS != ret) {
     debug_warning("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_read_data] ERROR: MPI_Recv fails\n", params->rank);

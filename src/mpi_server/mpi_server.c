@@ -147,6 +147,7 @@ void mpi_server_finish()
 {
   // Wait and finalize for all current workers
   debug_info("[TH_ID=%d] [MPI_SERVER] [mpi_server_up] Workers destroy\n", 0);
+  printf(">>>>>>>>>>>>>>>>>>>>SERVER FINISH<<<<<<<<<<<<<<<<<<<<<<<<");
 
   base_workers_destroy(&worker1);
   base_workers_destroy(&worker2);
@@ -263,10 +264,10 @@ int mpi_server_up ( void )
     case MPI_SOCKET_ACCEPT:
       mpi_server_accept();
       break;
-    // case MPI_SOCKET_FINISH:
-    //   mpi_server_finish();
-    //   the_end = 1;
-    //   break;
+    case MPI_SOCKET_FINISH:
+      mpi_server_finish();
+      the_end = 1;
+      break;
     default:
       perror("read");
       break;
