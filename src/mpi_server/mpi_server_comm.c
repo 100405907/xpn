@@ -460,6 +460,7 @@ ssize_t mpi_server_comm_write_data ( mpi_server_param_st *params, MPI_Comm fd, c
   debug_info("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_write_data] Write data\n", params->rank);
 
   ret = MPI_Send(data, size, MPI_CHAR, rank_client_id, tag_client_id, fd);
+  printf("FD SEND ------------------- %x\n", fd);
   if (MPI_SUCCESS != ret) {
     debug_warning("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_write_data] ERROR: MPI_Send fails\n", params->rank);
   }
