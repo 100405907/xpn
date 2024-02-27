@@ -283,6 +283,7 @@ public class Expand extends FileSystem {
 
 	public boolean exists (Path path){
 		System.out.println("------------------ENTRO A EXISTS------------------");
+		System.out.println("EXPAND INICIALIZADO EN EXIST ----------------- " + this.initialized);
 		path = removeURI(path);
 		Stat stats = this.xpn.jni_xpn_stat(path.toString());
 		System.out.println(path.toString());
