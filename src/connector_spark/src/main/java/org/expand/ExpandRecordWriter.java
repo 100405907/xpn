@@ -18,7 +18,6 @@ public class ExpandRecordWriter extends RecordWriter<Text, IntWritable> {
 
     public ExpandRecordWriter(Configuration conf, Path outputPath) throws IOException {
         this.outputPath = outputPath;
-        outputPath.getFileSystem(conf).initialize(URI.create("xpn:///"), conf);
         this.out = outputPath.getFileSystem(conf).append(outputPath);
     }
 
