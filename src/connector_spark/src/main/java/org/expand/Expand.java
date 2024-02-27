@@ -62,7 +62,8 @@ public class Expand extends FileSystem {
 
 	public void close() throws IOException {
 		System.out.println("------------------ENTRO A CLOSE------------------");
-		// super.close();
+		this.xpn.jni_xpn_destroy();
+		super.close();
 		System.out.println("------------------SALGO DE CLOSE------------------");
 	}
 
