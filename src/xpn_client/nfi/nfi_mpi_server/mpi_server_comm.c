@@ -238,6 +238,7 @@ int mpi_client_comm_connect ( mpi_client_param_st *params )
   do
   {
     ret = MPI_Comm_connect(params->port_name, MPI_INFO_NULL, 0, MPI_COMM_WORLD, &(params->server));
+    printf("---------------------------------- %x\n", params->server);
     if (MPI_SUCCESS != ret)
     {
       if (connect_retries == 0)
@@ -453,7 +454,7 @@ ssize_t mpi_client_read_data ( MPI_Comm fd, char *data, ssize_t size )
 
   // Get message
   debug_info("[MPI_CLIENT_COMM] [mpi_client_read_data] Read data\n");
-
+  printf("RECEIVE -------------------------------- %x\n", fd);
   ret = MPI_Recv(data, size, MPI_CHAR, 0, tag, fd, &status);
   if (MPI_SUCCESS != ret)
   {

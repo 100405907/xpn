@@ -330,6 +330,7 @@ MPI_Comm mpi_server_comm_accept ( mpi_server_param_st *params )
   debug_info("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_accept] Accept\n", params->rank);
 
   ret = MPI_Comm_accept(params->port_name, MPI_INFO_NULL, 0, MPI_COMM_SELF, &(sd));
+  printf("ACCEPT SERVIDOR -------------- %x", sd);
   if (MPI_SUCCESS != ret)
   {
     printf("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_destroy] ERROR: MPI_Comm_accept fails\n", params->rank);
