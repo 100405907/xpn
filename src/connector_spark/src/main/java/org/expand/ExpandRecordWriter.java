@@ -15,13 +15,13 @@ import java.util.List;
 public class ExpandRecordWriter extends RecordWriter<Text, IntWritable> {
     private Path outputPath;
     private FSDataOutputStream out;
-    private Expand xpn;
+    // private Expand xpn;
 
     public ExpandRecordWriter(Configuration conf, Path outputPath) throws IOException {
         this.outputPath = outputPath;
-        this.xpn = new Expand();
-        xpn.initialize(URI.create("xpn:///"), conf);
-        this.out = xpn.append(outputPath);
+        // this.xpn = new Expand();
+        // xpn.initialize(URI.create("xpn:///"), conf);
+        this.out = outputPath.getFileSystem(conf).append(outputPath);
     }
 
     @Override

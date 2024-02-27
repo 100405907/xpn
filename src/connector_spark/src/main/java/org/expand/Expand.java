@@ -49,7 +49,7 @@ public class Expand extends FileSystem {
 	public void initialize(URI uri, Configuration conf) throws IOException {
 		System.out.println("------------------ENTRO A INITIALIZE------------------");
 		try{
-		if (initialized) return;
+		if (this.initialized) return;
 		super.initialize(getUri(), conf);
 		this.xpn.jni_xpn_init();
 		this.initialized = true;
@@ -210,6 +210,7 @@ public class Expand extends FileSystem {
 	public FSDataOutputStream append(Path f, int bufferSize,
 			Progressable progress){
 		System.out.println("------------------ENTRO A APPEND------------------");
+		System.out.println("EXPAND INICIALIZADO ----------------------- " + this.initialized);
 		f = removeURI(f);
 		if (!exists(f)) xpn.jni_xpn_creat(f.toString(), flags.S_IRWXU | flags.S_IRWXG | flags.S_IRWXO);
 		System.out.println("------------------SALGO DE APPEND------------------");
