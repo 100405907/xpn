@@ -26,4 +26,9 @@ public class ExpandOutputFormat extends FileOutputFormat<Text, IntWritable> {
         System.out.println("--------------------LLEGO A EXPAND OUTPUT FORMAT--------------------");
         return new ExpandRecordWriter(job.getConfiguration(), out);
     }
+
+    @Override
+    public void checkOutputSpecs(JobContext job) throws IOException {
+        
+    }
 }
