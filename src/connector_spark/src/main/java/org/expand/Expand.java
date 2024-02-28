@@ -111,6 +111,10 @@ public class Expand extends FileSystem {
     	public boolean mkdirs(Path path, FsPermission permission) throws IOException {
 		System.out.println("------------------ENTRO A MKDIRS------------------");
 		path = removeURI(path);
+		StackTraceElement [] st = Thread.currentThread().getStackTrace();
+		for (int i = 0; i < st.length; i++){
+			System.out.println(st[i]);
+		}
 		
 		//short mode = permission.toShort();
 		//FsPermission perm = new FsPermission(mode);

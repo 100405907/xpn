@@ -31,4 +31,10 @@ public class ExpandOutputFormat extends FileOutputFormat<Text, IntWritable> {
     public void checkOutputSpecs(JobContext job) throws IOException {
         
     }
+
+    @Override
+    public OutputCommitter getOutputCommitter(TaskAttemptContext context) throws IOException {
+        Path outputPath = new Path(context.getConfiguration().get(OUTPUT_PATH_KEY));
+        return new ExpandOutputCommitter(outputPath, context);
+    }
 }
