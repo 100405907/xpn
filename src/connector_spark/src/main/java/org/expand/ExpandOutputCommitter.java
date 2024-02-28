@@ -4,9 +4,9 @@ import java.net.URI;
 import org.apache.hadoop.conf.Configuration;
 import org.expand.Expand;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.mapreduce.JobContext;
-import org.apache.hadoop.mapreduce.OutputCommitter;
-import org.apache.hadoop.mapreduce.TaskAttemptContext;
+import org.apache.hadoop.mapred.JobContext;
+import org.apache.hadoop.mapred.OutputCommitter;
+import org.apache.hadoop.mapred.TaskAttemptContext;
 import java.io.IOException;
 
 public class ExpandOutputCommitter extends OutputCommitter {
