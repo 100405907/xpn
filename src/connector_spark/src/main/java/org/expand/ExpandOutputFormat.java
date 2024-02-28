@@ -10,6 +10,8 @@ import org.apache.hadoop.mapred.JobContext;
 import org.apache.hadoop.mapred.OutputCommitter;
 import org.apache.hadoop.mapred.TaskAttemptContext;
 import org.apache.hadoop.mapred.FileOutputFormat;
+import org.apache.hadoop.mapred.FileAlreadyExistsException;
+import org.apache.hadoop.mapred.InvalidJobConfException;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.IntWritable;
 import java.net.URI;
@@ -27,10 +29,10 @@ public class ExpandOutputFormat extends FileOutputFormat<Text, IntWritable> {
         return new ExpandRecordWriter(job, out);
     }
 
-    // @Override
-    // public void checkOutputSpecs(JobContext job) throws IOException {
+    @Override
+    public void checkOutputSpecs(FileSystem ignored, JobConf job) throws FileAlreadyExistsException, InvalidJobConfException, IOException {
         
-    // }
+    }
 
     // @Override
     // public OutputCommitter getOutputCommitter(TaskAttemptContext context) throws IOException {
