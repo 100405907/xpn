@@ -19,9 +19,7 @@ public class ExpandOutputCommitter extends OutputCommitter {
 
     @Override
     public void commitJob(JobContext context) throws IOException {
-        if (!outputPath.getFileSystem(context.getConfiguration()).exists(outputPath.getParent())){
-            outputPath.getFileSystem(context.getConfiguration()).mkdirs(outputPath.getParent());
-        }
+        
     }
 
     @Override
