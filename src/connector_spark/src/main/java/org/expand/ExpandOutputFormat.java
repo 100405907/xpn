@@ -23,6 +23,7 @@ public class ExpandOutputFormat extends FileOutputFormat<Text, IntWritable> {
     @Override
     public RecordWriter<Text, IntWritable> getRecordWriter(TaskAttemptContext job) throws IOException, InterruptedException {
         Path out = new Path(job.getConfiguration().get(OUTPUT_PATH_KEY));
+        System.out.println("--------------------LLEGO A EXPAND OUTPUT FORMAT--------------------");
         return new ExpandRecordWriter(job.getConfiguration(), out);
     }
 }
