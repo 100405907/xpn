@@ -21,6 +21,7 @@ public class ExpandRecordWriter extends RecordWriter<Text, IntWritable> {
         this.outputPath = outputPath;
         // this.xpn = new Expand();
         // xpn.initialize(URI.create("xpn:///"), conf);
+        System.out.println("--------------------LLEGO A EXPAND RECORD WRITER--------------------");
         this.out = outputPath.getFileSystem(conf).append(outputPath);
     }
 
