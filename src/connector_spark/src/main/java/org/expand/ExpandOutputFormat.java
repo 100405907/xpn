@@ -7,7 +7,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.util.Progressable;
 import org.apache.hadoop.mapred.RecordWriter;
 import org.apache.hadoop.mapred.JobContext;
-import org.apache.hadoop.mapred.OutputCommitter;
+import org.apache.hadoop.mapreduce.OutputCommitter;
 import org.apache.hadoop.mapred.TaskAttemptContext;
 import org.apache.hadoop.mapred.FileOutputFormat;
 import org.apache.hadoop.mapred.FileAlreadyExistsException;
@@ -26,13 +26,13 @@ public class ExpandOutputFormat extends FileOutputFormat<Text, IntWritable> {
     public RecordWriter<Text, IntWritable> getRecordWriter(FileSystem ignored, JobConf job, String name, Progressable progress) throws IOException {
         Path out = new Path(job.get(OUTPUT_PATH_KEY));
         System.out.println("--------------------LLEGO A EXPAND OUTPUT FORMAT--------------------");
-        job.setOutputCommitter(org.expand.ExpandOutputCommitter.class);
         return new ExpandRecordWriter(job, out);
     }
 
     @Override
     public void checkOutputSpecs(FileSystem ignored, JobConf job) throws FileAlreadyExistsException, InvalidJobConfException, IOException {
         
+        job.setOutputCommitter(ExpandOutputCommitter.class);
     }
 
     // @Override
