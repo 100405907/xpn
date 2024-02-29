@@ -11,10 +11,8 @@ import java.io.IOException;
 
 public class ExpandOutputCommitter extends OutputCommitter {
 
-    private Path outputPath;
-
-    public ExpandOutputCommitter(Path outputPath, TaskAttemptContext context) throws IOException {
-        this.outputPath = outputPath;
+    public ExpandOutputCommitter() throws IOException {
+        
     }
 
     @Override
