@@ -26,6 +26,7 @@ public class ExpandOutputFormat extends FileOutputFormat<Text, IntWritable> {
     public RecordWriter<Text, IntWritable> getRecordWriter(FileSystem ignored, JobConf job, String name, Progressable progress) throws IOException {
         Path out = new Path(job.get(OUTPUT_PATH_KEY));
         System.out.println("--------------------LLEGO A EXPAND OUTPUT FORMAT--------------------");
+        job.setOutputCommitter(org.expand.ExpandOutputCommitter.class);
         return new ExpandRecordWriter(job, out);
     }
 
