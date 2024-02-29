@@ -1,3 +1,4 @@
+org/apache/spark/internal/io/ExpandCommitProtocol.class
 org/expand/ExpandFSInputStream.class
 org/expand/ExpandOutputFormat.class
 org/expand/testExpandToPosix.class
@@ -7,7 +8,6 @@ org/expand/testExpand.class
 org/expand/ExpandToPosix.class
 org/expand/ExpandInputChannel.class
 org/expand/ExpandFlags.class
-org/expand/ExpandCommitProtocol.class
 org/expand/ExpandRecordWriter.class
 org/expand/ExpandOutputChannel.class
 org/expand/ExpandInputStream.class
