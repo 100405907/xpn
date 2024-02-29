@@ -330,7 +330,7 @@ MPI_Comm mpi_server_comm_accept ( mpi_server_param_st *params )
   debug_info("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_accept] Accept\n", params->rank);
 
   ret = MPI_Comm_accept(params->port_name, MPI_INFO_NULL, 0, MPI_COMM_SELF, &(sd));
-  printf("ACCEPT SERVIDOR -------------- %x", sd);
+
   if (MPI_SUCCESS != ret)
   {
     printf("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_destroy] ERROR: MPI_Comm_accept fails\n", params->rank);
@@ -460,7 +460,7 @@ ssize_t mpi_server_comm_write_data ( mpi_server_param_st *params, MPI_Comm fd, c
   debug_info("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_write_data] Write data\n", params->rank);
 
   ret = MPI_Send(data, size, MPI_CHAR, rank_client_id, tag_client_id, fd);
-  printf("FD SEND ------------------- %x\n", fd);
+
   if (MPI_SUCCESS != ret) {
     debug_warning("[Server=%d] [MPI_SERVER_COMM] [mpi_server_comm_write_data] ERROR: MPI_Send fails\n", params->rank);
   }

@@ -454,7 +454,7 @@ ssize_t mpi_client_read_data ( MPI_Comm fd, char *data, ssize_t size )
 
   // Get message
   debug_info("[MPI_CLIENT_COMM] [mpi_client_read_data] Read data\n");
-  printf("RECEIVE -------------------------------- %x\n", fd);
+
   ret = MPI_Recv(data, size, MPI_CHAR, 0, tag, fd, &status);
   if (MPI_SUCCESS != ret)
   {

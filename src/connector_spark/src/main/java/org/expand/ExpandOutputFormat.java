@@ -31,7 +31,7 @@ public class ExpandOutputFormat extends FileOutputFormat<Text, IntWritable> {
 
     @Override
     public void checkOutputSpecs(FileSystem ignored, JobConf job) throws FileAlreadyExistsException, InvalidJobConfException, IOException {
-        
+        job.set("spark.hadoop.mapreduce.outputcommitter.factory.scheme.xpn", "org.expand.ExpandCommitProtocol");
         job.setOutputCommitter(ExpandOutputCommitter.class);
     }
 
