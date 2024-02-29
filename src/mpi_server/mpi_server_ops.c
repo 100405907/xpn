@@ -19,7 +19,7 @@
  *
  */
 
-#define DEBUG
+// #define DEBUG
 /* ... Include / Inclusion ........................................... */
 
 #include "mpi_server_ops.h"
@@ -898,14 +898,14 @@ void mpi_server_op_getattr ( mpi_server_param_st *params, MPI_Comm sd, struct st
 {
   struct st_mpi_server_attr_req req;
   char path [PATH_MAX];
-  printf("-------------------------ANTES DE RETURN-----------------------\n");
+
   // check params...
   if (NULL == params)
   {
     printf("[Server=%d] [MPI_SERVER_OPS] [mpi_server_op_getattr] ERROR: NULL arguments\n", -1);
     return;
   }
-  printf("-------------------------DESPUES DE RETURN-----------------------\n");
+
 
   debug_info("[Server=%d] [MPI_SERVER_OPS] [mpi_server_op_getattr] >> Begin\n", params->rank);
   debug_info("[Server=%d] [MPI_SERVER_OPS] [mpi_server_op_getattr] stat(%s)\n", params->rank, head->u_st_mpi_server_msg.op_getattr.path);
@@ -916,9 +916,9 @@ void mpi_server_op_getattr ( mpi_server_param_st *params, MPI_Comm sd, struct st
 
   // do getattr
   req.status = filesystem_stat(path, &req.attr);
-  printf("----------------------ANTES DE COMM_WRITE---------------------------\n");
+
   mpi_server_comm_write_data(params, sd,(char *)&req,sizeof(struct st_mpi_server_attr_req), rank_client_id, tag_client_id);
-  printf("----------------------DESPUES DE COMM_WRITE---------------------------\n");
+
 
   debug_info("[Server=%d] [MPI_SERVER_OPS] [mpi_server_op_getattr] stat(%s)=%d\n", params->rank, head->u_st_mpi_server_msg.op_getattr.path, req.status);
   debug_info("[Server=%d] [MPI_SERVER_OPS] [mpi_server_op_getattr] << End\n", params->rank);
