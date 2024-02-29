@@ -18,7 +18,7 @@
  *  along with Expand.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#define DEBUG
+// #define DEBUG
 /* ... Include / Inclusion ........................................... */
 #include "mpi_server_comm.h"
 
@@ -238,7 +238,7 @@ int mpi_client_comm_connect ( mpi_client_param_st *params )
   do
   {
     ret = MPI_Comm_connect(params->port_name, MPI_INFO_NULL, 0, MPI_COMM_WORLD, &(params->server));
-    printf("---------------------------------- %x\n", params->server);
+
     if (MPI_SUCCESS != ret)
     {
       if (connect_retries == 0)
