@@ -1,0 +1,6 @@
+<aspectj>
+    <aspects>
+        <aspect name="org.expand.ExpandIntercept"/>
+    </aspects>
+    <weaver options="-verbose -showWeaveInfo"/>
+</aspectj>
