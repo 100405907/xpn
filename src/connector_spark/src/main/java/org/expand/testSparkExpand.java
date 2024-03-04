@@ -68,7 +68,7 @@ public class testSparkExpand{
 		try{
 			FSDataOutputStream out = xpn.create(outputpath);
 
-			finalCounts.foreach(tuple->{
+			counts.foreach(tuple->{
 
 				xpn.write(out, tuple._1(), tuple._2());
 
