@@ -254,7 +254,7 @@ public class Expand extends FileSystem {
 		return create(f, FsPermission.getFileDefault(), true, 4096, (short) 0, (long) 4096, null);
 	}
 
-	public void write(FSDataOutputStream out, Text key, IntWritable value) throws IOException {
+	public void write(FSDataOutputStream out, String key, Integer value) throws IOException {
         String towr = "{key: " + key.toString() + ", value: " + value.toString() + "}\n";
         out.write(towr.getBytes());
     }
