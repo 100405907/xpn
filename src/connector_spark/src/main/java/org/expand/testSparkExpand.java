@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import java.util.List;
 import org.apache.spark.sql.SparkSession;
 
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -54,18 +55,16 @@ public class testSparkExpand{
 
 		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2);
 		
-		List<Tuple2<Text, LongWritable>> finalCounts = counts.mapToPair(pair -> new Tuple2<>(new Text(pair._1()), new LongWritable(pair._2().longValue()))).collect();
+		JavaPairRDD<Text, IntWritable> finalCounts = counts.mapToPair(pair -> new Tuple2<>(new Text(pair._1()), new IntWritable(pair._2())));
 
-		// xpnconf.set("xpn.output.path", "xpn:///xpn/wc-quixote");
+		xpnconf.set("xpn.output.path", "xpn:///xpn/wc-quixote");
 
-		// for (JavaPairRDD<Text, LongWritable> result : finalCounts){
-		// 	result.saveAsNewAPIHadoopFile (
-		// 		"xpn:///xpn/wc-quixote",
-		// 		Text.class,
-		// 		LongWritable.class,
-		// 		ExpandOutputFormat.class
-		// 	);
-		// }
+		finalCounts.saveAsHadoopFile (
+			"xpn:///xpn/wc-quixote",
+			Text.class,
+			IntWritable.class,
+			ExpandOutputFormat.class
+		);
         
 		sc.stop();
 	}
