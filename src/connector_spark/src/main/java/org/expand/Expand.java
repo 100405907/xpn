@@ -19,6 +19,8 @@ import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.util.Progressable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.IntWritable;
 
 import org.expand.ExpandFSInputStream;
 import org.expand.ExpandToPosix;
@@ -251,6 +253,11 @@ public class Expand extends FileSystem {
 	public FSDataOutputStream create(Path f) throws IOException {
 		return create(f, FsPermission.getFileDefault(), true, 4096, (short) 0, (long) 4096, null);
 	}
+
+	public void write(FSDataOutputStream out, Text key, IntWritable value) throws IOException {
+        String towr = "{key: " + key.toString() + ", value: " + value.toString() + "}\n";
+        out.write(towr.getBytes());
+    }
 
 	@Override
     	public FSDataInputStream open(Path f, int bufferSize){
