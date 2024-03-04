@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import java.util.List;
 import org.apache.spark.sql.SparkSession;
 
+import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -27,16 +28,22 @@ public class testSparkExpand{
         public static void main(String[] args) {
 
 		JavaSparkContext sc = new JavaSparkContext(new SparkConf().setAppName("wc")
-                        .set("spark.hadoop.fs.defaultFS", "xpn:///")
-                        .set("spark.hadoop.fs.xpn.impl", "org.expand.Expand"));
+            .set("spark.hadoop.fs.defaultFS", "xpn:///")
+            .set("spark.hadoop.fs.xpn.impl", "org.expand.Expand"));
 
 		SparkSession spark = SparkSession.builder().appName("wc")
 			.config("spark.hadoop.fs.defaultFS", "xpn:///")
-                        .config("spark.hadoop.fs.xpn.impl", "org.expand.Expand")
+            .config("spark.hadoop.fs.xpn.impl", "org.expand.Expand")
 			.getOrCreate();
+		
+		Expand xpn = new Expand();
 
 		Configuration xpnconf = sc.hadoopConfiguration();
-		
+		try{
+			xpn.initialize(URI.create("xpn:///"), xpnconf);
+		}catch (Exception e){
+			System.out.println(e);
+		}
         String filePath = "xpn:///xpn/quixote";
 
 		JavaPairRDD<LongWritable, Text> rdd = sc.newAPIHadoopFile(
@@ -57,14 +64,28 @@ public class testSparkExpand{
 		
 		JavaPairRDD<Text, IntWritable> finalCounts = counts.mapToPair(pair -> new Tuple2<>(new Text(pair._1()), new IntWritable(pair._2())));
 
-		xpnconf.set("xpn.output.path", "xpn:///xpn/wc-quixote");
+		Path outputpath = new Path ("xpn:///xpn/wc-quixote4");
+		try{
+			FSDataOutputStream out = xpn.create(outputpath);
 
-		finalCounts.saveAsHadoopFile (
-			"xpn:///xpn/wc-quixote",
-			Text.class,
-			IntWritable.class,
-			ExpandOutputFormat.class
-		);
+			finalCounts.foreach(tuple->{
+
+				xpn.write(out, tuple._1(), tuple._2());
+
+			});
+
+			out.close();
+		}catch (Exception e){
+			System.out.println(e);
+		}
+		// xpnconf.set("xpn.output.path", "xpn:///xpn/wc-quixote");
+
+		// finalCounts.saveAsHadoopFile (
+		// 	"xpn:///xpn/wc-quixote",
+		// 	Text.class,
+		// 	IntWritable.class,
+		// 	ExpandOutputFormat.class
+		// );
         
 		sc.stop();
 	}
