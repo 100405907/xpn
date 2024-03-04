@@ -36,14 +36,14 @@ public class testSparkExpand{
             .config("spark.hadoop.fs.xpn.impl", "org.expand.Expand")
 			.getOrCreate();
 		
-		Expand xpn = new Expand();
+		// Expand xpn = new Expand();
 
 		Configuration xpnconf = sc.hadoopConfiguration();
-		try{
-			xpn.initialize(URI.create("xpn:///"), xpnconf);
-		}catch (Exception e){
-			System.out.println(e);
-		}
+		// try{
+		// 	xpn.initialize(URI.create("xpn:///"), xpnconf);
+		// }catch (Exception e){
+		// 	System.out.println(e);
+		// }
         String filePath = "xpn:///xpn/quixote";
 
 		JavaPairRDD<LongWritable, Text> rdd = sc.newAPIHadoopFile(
@@ -65,16 +65,19 @@ public class testSparkExpand{
 		JavaPairRDD<Text, IntWritable> finalCounts = counts.mapToPair(pair -> new Tuple2<>(new Text(pair._1()), new IntWritable(pair._2())));
 
 		Path outputpath = new Path ("xpn:///xpn/wc-quixote4");
+
 		try{
-			FSDataOutputStream out = xpn.create(outputpath);
+		// 	FSDataOutputStream out = xpn.create(outputpath);
 
-			counts.foreach(tuple->{
+			ExpandRecordWriter xpnwr = new ExpandRecordWriter(xpnconf, outputpath);
 
-				xpn.write(out, tuple._1(), tuple._2());
+			finalCounts.foreach(tuple->{
+
+				xpnwr.write(tuple._1(), tuple._2());
 
 			});
 
-			out.close();
+		// 	out.close();
 		}catch (Exception e){
 			System.out.println(e);
 		}
