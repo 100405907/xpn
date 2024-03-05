@@ -152,7 +152,7 @@ class ExpandRDDFunctions[K, V](self: JavaRDD[(K, V)])
    */
   def saveAsExpandDataset(conf: JobConf): Unit = self.withScope {
     val config = new HadoopMapRedWriteConfigUtil[K, V](new SerializableJobConf(conf))
-    SparkHadoopWriter.write(
+    SparkExpandWriter.write(
       rdd = self,
       config = config)
   }
