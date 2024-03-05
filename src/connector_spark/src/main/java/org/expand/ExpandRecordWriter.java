@@ -11,8 +11,8 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import scala.Tuple2;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
+import java.io.Serializable;
 
 public class ExpandRecordWriter implements RecordWriter<Text, IntWritable>, Serializable {
     private Path outputPath;
