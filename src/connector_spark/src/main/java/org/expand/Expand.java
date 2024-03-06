@@ -112,11 +112,6 @@ public class Expand extends FileSystem {
 	@Override
     	public boolean mkdirs(Path path, FsPermission permission) throws IOException {
 		System.out.println("------------------ENTRO A MKDIRS------------------");
-		path = removeURI(path);
-		StackTraceElement [] st = Thread.currentThread().getStackTrace();
-		for (int i = 0; i < st.length; i++){
-			System.out.println(st[i]);
-		}
 		
 		//short mode = permission.toShort();
 		//FsPermission perm = new FsPermission(mode);
@@ -295,10 +290,6 @@ public class Expand extends FileSystem {
 
 	public boolean exists (Path path){
 		System.out.println("------------------ENTRO A EXISTS------------------");
-		StackTraceElement [] st = Thread.currentThread().getStackTrace();
-		for (int i = 0; i < st.length; i++){
-			System.out.println(st[i]);
-		}
 		path = removeURI(path);
 		Stat stats = this.xpn.jni_xpn_stat(path.toString());
 		System.out.println(path.toString());
