@@ -33,16 +33,6 @@ public class ExpandRecordWriter implements RecordWriter<Text, IntWritable>, Seri
         out.write(towr.getBytes());
     }
 
-    // public void write(Tuple2<Text, IntWritable> [] tuples) throws IOException, InterruptedException{
-        
-    //     for (Tuple2<Text, IntWritable> tuple : tuples){
-    //         if (tuple._2().get() > 1){
-    //             String towr = "{key: " + tuple._1().toString() + ", value: " + tuple._2().toString() + "} ";
-    //             out.write(towr.getBytes());
-    //         }
-    //     }
-    // }
-
     @Override
     public void close(Reporter reporter) throws IOException {
         out.close();

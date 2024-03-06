@@ -93,5 +93,6 @@ public class testSparkExpand {
 		func.saveAsExpandFile ("xpn:///xpn/wc-quixote", ClassTag$.MODULE$.apply(ExpandOutputFormat.class));
 		
 		sc.stop();
+		System.out.println("TERMINE");
 	}
 }

@@ -45,7 +45,6 @@ public class ExpandOutputStream extends OutputStream {
 		if (out == null) return;
 		if (b == null) return;
 		if (off < 0 || len < 0 || (off + len) > b.length) return;
-		System.out.println("BYTES WR: " + out.write(ByteBuffer.wrap(b, off, len)));
 	}
 
 	@Override
