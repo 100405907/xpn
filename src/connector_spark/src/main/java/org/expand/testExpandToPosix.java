@@ -2,8 +2,9 @@ package org.expand;
 
 import java.nio.ByteBuffer;
 
-import org.expand.ExpandToPosix;
-import org.expand.Stat;
+import org.expand.jni.ExpandToPosix;
+import org.expand.jni.Stat;
+import org.expand.jni.ExpandFlags;
 
 public class testExpandToPosix {
 	

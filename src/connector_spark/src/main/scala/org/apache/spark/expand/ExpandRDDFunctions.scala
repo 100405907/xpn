@@ -45,9 +45,9 @@ import org.apache.spark.util.{SerializableConfiguration, SerializableJobConf, Ut
 import org.apache.spark.util.collection.CompactBuffer
 import org.apache.spark.util.random.StratifiedSamplingUtils
 import org.apache.spark.rdd._
-import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaRDD
 
-import org.expand.ExpandOutputCommitter
+import org.expand.spark.ExpandOutputCommitter
 
 /**
  * Extra functions available on RDDs of (key, value) pairs through an implicit conversion.
