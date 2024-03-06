@@ -37,7 +37,6 @@ import org.apache.spark.internal.io.{SparkHadoopWriterUtils, HadoopWriteConfigUt
 import org.apache.spark.internal.io.FileCommitProtocol.TaskCommitMessage
 import org.apache.spark.rdd.{HadoopRDD, RDD}
 import org.apache.spark.util.{SerializableConfiguration, SerializableJobConf, Utils}
-//import org.apache.spark.util.ArrayImplicits._
 
 /**
  * A helper object that saves an RDD using a Hadoop OutputFormat.
