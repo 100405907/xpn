@@ -3,52 +3,40 @@ package org.expand;
 import org.apache.spark.expand.*;
 
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import scala.Tuple2;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.List;
 import org.apache.spark.sql.SparkSession;
 
 import org.apache.hadoop.mapred.JobConf;
-import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.conf.Configuration;
 import java.net.URI;
-import java.io.Serializable;
 import scala.reflect.ClassTag;
 import scala.reflect.ClassTag$;
+
+import org.expand.spark.ExpandOutputFormat;
+import org.expand.spark.ExpandInputFormat;
 
 public class testSparkExpand {
 	public static void main(String[] args) {
 
 		JavaSparkContext sc = new JavaSparkContext(new SparkConf().setAppName("wc")
 			.set("spark.hadoop.fs.defaultFS", "xpn:///")
-			.set("spark.hadoop.fs.xpn.impl", "org.expand.Expand"));
+			.set("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand"));
 
 		SparkSession spark = SparkSession.builder().appName("wc")
 			.config("spark.hadoop.fs.defaultFS", "xpn:///")
-			.config("spark.hadoop.fs.xpn.impl", "org.expand.Expand")
+			.config("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand")
 			.getOrCreate();
-		
-		// Expand xpn = new Expand();
 
 		Configuration xpnconf = sc.hadoopConfiguration();
-
-		// try{
-		// 	xpn.initialize(URI.create("xpn:///"), xpnconf);
-		// } catch (Exception e) {
-		// 	System.out.println("Excepcionn en init: " + e);
-		// }
 		
 		String filePath = "xpn:///xpn/quixote";
 
@@ -68,29 +56,16 @@ public class testSparkExpand {
 
 		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2);
 		
-		JavaRDD<Tuple2<Text, IntWritable>> finalCounts = counts.map(pair -> new Tuple2<>(new Text(pair._1()), new IntWritable(pair._2())));
+		JavaRDD<Tuple2<String, Integer>> finalCounts = counts.map(pair -> new Tuple2<>(pair._1(), pair._2()));
 
 		// Path outputpath = new Path ("xpn:///xpn/wc-quixote4");
 		
 		xpnconf.set("xpn.output.path", "xpn:///xpn/wc-quixote");
 
-		// SparkExpandWriter.write(finalCounts, new JobConf(xpnconf));
-
-		// try{
-		// 	finalCounts.foreach(tuple -> {
-		// 		FSDataOutputStream out = xpn.append(outputpath);
-		// 		String towr = "{key: " + tuple._1().toString() + ", value: " + tuple._2().toString() + "}\n";
-		// 		out.write(towr.getBytes());
-		// 		out.close();
-		// 	});
-		// }catch (Exception e){
-		// 	e.printStackTrace();
-		// }
-
-		ExpandRDDFunctions<Text, IntWritable> func =
-                new ExpandRDDFunctions<Text, IntWritable>(finalCounts, ClassTag$.MODULE$.apply(Text.class), ClassTag$.MODULE$.apply(IntWritable.class), null);
+		ExpandRDDFunctions<String, Integer> func =
+                new ExpandRDDFunctions<String, Integer>(finalCounts, ClassTag$.MODULE$.apply(Text.class), ClassTag$.MODULE$.apply(IntWritable.class), null);
 		
-		func.saveAsExpandFile ("xpn:///xpn/wc-quixote", ClassTag$.MODULE$.apply(ExpandOutputFormat.class));
+		func.saveAsExpandFile("xpn:///xpn/wc-quixote", ClassTag$.MODULE$.apply(ExpandOutputFormat.class));
 		
 		sc.stop();
 		System.out.println("TERMINE");

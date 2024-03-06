@@ -1,6 +1,6 @@
 package org.expand;
 
-import org.expand.Expand;
+import org.expand.hadoop.Expand;
 import org.apache.hadoop.fs.Path;
 import java.net.URI;
 import org.apache.hadoop.conf.Configuration;
