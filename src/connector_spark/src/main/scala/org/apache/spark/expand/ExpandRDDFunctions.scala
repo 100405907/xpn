@@ -17,33 +17,18 @@
 
 package org.apache.spark.expand
 
-import java.nio.ByteBuffer
-import java.util.{HashMap => JHashMap}
-
-import scala.collection.{mutable, Map}
-import scala.collection.mutable.ArrayBuffer
-// import scala.jdk.CollectionConverters._
 import scala.reflect.ClassTag
 
-import com.clearspring.analytics.stream.cardinality.HyperLogLogPlus
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.io.SequenceFile.CompressionType
 import org.apache.hadoop.io.compress.CompressionCodec
 import org.apache.hadoop.mapred.{FileOutputCommitter, FileOutputFormat, JobConf, OutputFormat}
-import org.apache.hadoop.mapreduce.{Job => NewAPIHadoopJob, OutputFormat => NewOutputFormat}
 
 import org.apache.spark._
-import org.apache.spark.Partitioner.defaultPartitioner
-import org.apache.spark.errors.SparkCoreErrors
 import org.apache.spark.internal.Logging
 import org.apache.spark.internal.config.SPECULATION_ENABLED
 import org.apache.spark.internal.io._
-import org.apache.spark.partial.{BoundedDouble, PartialResult}
-import org.apache.spark.serializer.Serializer
 import org.apache.spark.util.{SerializableConfiguration, SerializableJobConf, Utils}
-// import org.apache.spark.util.ArrayImplicits._
-import org.apache.spark.util.collection.CompactBuffer
-import org.apache.spark.util.random.StratifiedSamplingUtils
 import org.apache.spark.rdd._
 import org.apache.spark.api.java.JavaRDD
 

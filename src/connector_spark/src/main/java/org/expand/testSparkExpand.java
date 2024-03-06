@@ -23,6 +23,7 @@ import scala.reflect.ClassTag$;
 
 import org.expand.spark.ExpandOutputFormat;
 import org.expand.spark.ExpandInputFormat;
+import org.expand.spark.ExpandSparkFunctions;
 
 public class testSparkExpand {
 	public static void main(String[] args) {
@@ -56,16 +57,7 @@ public class testSparkExpand {
 
 		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2);
 		
-		JavaRDD<Tuple2<String, Integer>> finalCounts = counts.map(pair -> new Tuple2<>(pair._1(), pair._2()));
-
-		// Path outputpath = new Path ("xpn:///xpn/wc-quixote4");
-		
-		xpnconf.set("xpn.output.path", "xpn:///xpn/wc-quixote");
-
-		ExpandRDDFunctions<String, Integer> func =
-                new ExpandRDDFunctions<String, Integer>(finalCounts, ClassTag$.MODULE$.apply(Text.class), ClassTag$.MODULE$.apply(IntWritable.class), null);
-		
-		func.saveAsExpandFile("xpn:///xpn/wc-quixote", ClassTag$.MODULE$.apply(ExpandOutputFormat.class));
+		ExpandSparkFunctions.writeExpand(counts, "xpn:///xpn/wc-quixote", xpnconf);
 		
 		sc.stop();
 		System.out.println("TERMINE");

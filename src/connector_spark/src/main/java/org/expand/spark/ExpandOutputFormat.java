@@ -1,20 +1,13 @@
 package org.expand.spark;
 
-import org.expand.hadoop.Expand;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.util.Progressable;
 import org.apache.hadoop.mapred.RecordWriter;
-import org.apache.hadoop.mapred.JobContext;
-import org.apache.hadoop.mapreduce.OutputCommitter;
-import org.apache.hadoop.mapred.TaskAttemptContext;
 import org.apache.hadoop.mapred.FileOutputFormat;
 import org.apache.hadoop.mapred.FileAlreadyExistsException;
 import org.apache.hadoop.mapred.InvalidJobConfException;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.IntWritable;
-import java.net.URI;
 import java.io.IOException;
 
 import org.expand.spark.ExpandOutputCommitter;
