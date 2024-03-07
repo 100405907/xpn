@@ -41,7 +41,7 @@ public class testSparkExpand {
 		
 		String filePath = "xpn:///xpn/quixote";
 
-		JavaPairRDD<LongWritable, Text> rdd = sc.newAPIHadoopFile(
+		JavaPairRDD<Text, String> rdd = sc.newAPIHadoopFile(
 			filePath,
 			ExpandInputFormat.class,
 			LongWritable.class,
@@ -49,7 +49,7 @@ public class testSparkExpand {
 			sc.hadoopConfiguration()
 		);
 
-		JavaRDD<String> lines = rdd.map(tuple -> tuple._2().toString());
+		JavaRDD<String> lines = rdd.map(tuple -> tuple._2());
 
 		JavaRDD<String> words = lines.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
