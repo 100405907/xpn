@@ -11,10 +11,10 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
 import java.io.IOException;
 
-public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
+public class ExpandRecordReader<K, V> extends RecordReader<K, V> {
 
-    private LongWritable key = new LongWritable();
-    private Text value = new Text();
+    private K key;
+    private V value;
     private long start;
     private long end;
     private long pos;
@@ -35,11 +35,11 @@ public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
     @Override
     public boolean nextKeyValue() throws IOException, InterruptedException {
         if (pos < end) {
-            key.set(pos);
+            key = (K) new Long(pos);
 	        byte[] buffer = new byte[bufsize];
             int bytesRead = fsin.read(buffer);
             if (bytesRead > 0) {
-                value.set(new String(buffer, 0, bytesRead));
+                value = (V) new String(buffer, 0, bytesRead);
                 pos += bytesRead;
                 return true;
             }
@@ -48,12 +48,12 @@ public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
     }
 
     @Override
-    public LongWritable getCurrentKey() throws IOException, InterruptedException {
+    public K getCurrentKey() throws IOException, InterruptedException {
         return key;
     }
 
     @Override
-    public Text getCurrentValue() throws IOException, InterruptedException {
+    public V getCurrentValue() throws IOException, InterruptedException {
         return value;
     }
 

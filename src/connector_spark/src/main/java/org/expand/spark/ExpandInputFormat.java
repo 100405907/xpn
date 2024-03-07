@@ -11,10 +11,10 @@ import org.apache.hadoop.mapreduce.RecordReader;
 
 import java.io.IOException;
 
-public class ExpandInputFormat extends FileInputFormat<LongWritable, Text> {
+public class ExpandInputFormat<K, V> extends FileInputFormat<K, V> {
 
     @Override
-    public RecordReader<LongWritable, Text> createRecordReader(InputSplit split, TaskAttemptContext context) throws IOException, InterruptedException {
+    public RecordReader<K, V> createRecordReader(InputSplit split, TaskAttemptContext context) throws IOException, InterruptedException {
 	    return new ExpandRecordReader();
     }
 

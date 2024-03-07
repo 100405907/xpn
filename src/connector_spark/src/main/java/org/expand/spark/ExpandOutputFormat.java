@@ -12,12 +12,12 @@ import java.io.IOException;
 
 import org.expand.spark.ExpandOutputCommitter;
 
-public class ExpandOutputFormat extends FileOutputFormat<String, Integer> {
+public class ExpandOutputFormat<K, V> extends FileOutputFormat<K, V> {
 
     private static final String OUTPUT_PATH_KEY = "xpn.output.path";
     
     @Override
-    public RecordWriter<String, Integer> getRecordWriter(FileSystem ignored, JobConf job, String name, Progressable progress) throws IOException {
+    public RecordWriter<K, V> getRecordWriter(FileSystem ignored, JobConf job, String name, Progressable progress) throws IOException {
         Path out = new Path(job.get(OUTPUT_PATH_KEY));
         System.out.println("--------------------LLEGO A EXPAND OUTPUT FORMAT--------------------");
         return new ExpandRecordWriter(job, out);
@@ -25,7 +25,6 @@ public class ExpandOutputFormat extends FileOutputFormat<String, Integer> {
 
     @Override
     public void checkOutputSpecs(FileSystem ignored, JobConf job) throws FileAlreadyExistsException, InvalidJobConfException, IOException {
-        job.set("mapreduce.outputcommitter.factory.scheme.xpn", "org.expand.spark.ExpandOutputCommitter");
         job.setOutputCommitter(ExpandOutputCommitter.class);
     }
 

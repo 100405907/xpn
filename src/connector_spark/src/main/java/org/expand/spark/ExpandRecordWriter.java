@@ -9,7 +9,7 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
-public class ExpandRecordWriter implements RecordWriter<String, Integer>, Serializable {
+public class ExpandRecordWriter<K, V> implements RecordWriter<K, V>, Serializable {
     private Path outputPath;
     private FSDataOutputStream out;
 
@@ -19,8 +19,8 @@ public class ExpandRecordWriter implements RecordWriter<String, Integer>, Serial
     }
 
     @Override
-    public void write(String key, Integer value) throws IOException {
-        String towr = "{key: " + key + ", value: " + value.toString() + "}\n";
+    public void write(K key, V value) throws IOException {
+        String towr = "{key: " + key.toString() + ", value: " + value.toString() + "}\n";
         out.write(towr.getBytes());
     }
 
