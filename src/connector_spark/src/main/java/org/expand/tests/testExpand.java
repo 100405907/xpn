@@ -1,4 +1,4 @@
-package org.expand;
+package org.expand.tests;
 
 import org.expand.hadoop.Expand;
 import org.apache.hadoop.fs.Path;

@@ -1,4 +1,4 @@
-package org.expand;
+package org.expand.tests;
 
 import java.nio.ByteBuffer;
 
