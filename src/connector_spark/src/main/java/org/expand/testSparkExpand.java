@@ -1,6 +1,6 @@
 package org.expand;
 
-import org.apache.spark.expand.*;
+import org.apache.spark.expand.ExpandRDDFunctions;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -44,8 +44,8 @@ public class testSparkExpand {
 		JavaPairRDD<Text, String> rdd = sc.newAPIHadoopFile(
 			filePath,
 			ExpandInputFormat.class,
-			LongWritable.class,
 			Text.class,
+			String.class,
 			sc.hadoopConfiguration()
 		);
 
