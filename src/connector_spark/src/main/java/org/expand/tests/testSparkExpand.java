@@ -36,6 +36,8 @@ public class testSparkExpand {
 			.config("spark.hadoop.fs.defaultFS", "xpn:///")
 			.config("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand")
 			.getOrCreate();
+    	
+		long startTime = System.nanoTime();
 
 		Configuration xpnconf = sc.hadoopConfiguration();
 		
@@ -58,8 +60,8 @@ public class testSparkExpand {
 		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2);
 		
 		ExpandSparkFunctions.writeExpand(counts, "xpn:///xpn/wc-quixote", xpnconf);
-		
+    	System.out.println("---------------------------------- " + (System.nanoTime() - startTime) + " ---------------------------------");
+
 		sc.stop();
-		System.out.println("TERMINE");
 	}
 }
