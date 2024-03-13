@@ -18,10 +18,15 @@
  *  along with Expand.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+<<<<<<< HEAD
 
 
 /* ... Include / Inclusion ........................................... */
 
+=======
+// #define DEBUG
+/* ... Include / Inclusion ........................................... */
+>>>>>>> origin/beta_spark
 #include "mpi_server_comm.h"
 
 
@@ -240,6 +245,10 @@ int mpi_client_comm_connect ( mpi_client_param_st *params )
   do
   {
     ret = MPI_Comm_connect(params->port_name, MPI_INFO_NULL, 0, MPI_COMM_WORLD, &(params->server));
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/beta_spark
     if (MPI_SUCCESS != ret)
     {
       if (connect_retries == 0)
@@ -269,7 +278,11 @@ int mpi_client_comm_connect ( mpi_client_param_st *params )
 
 int mpi_client_comm_disconnect ( mpi_client_param_st *params )
 {
+<<<<<<< HEAD
   int ret;
+=======
+  int ret, size;
+>>>>>>> origin/beta_spark
 
   debug_info("[MPI_CLIENT_COMM] [mpi_client_comm_disconnect] >> Begin\n");
 
@@ -285,8 +298,13 @@ int mpi_client_comm_disconnect ( mpi_client_param_st *params )
   
   // Disconnect
   debug_info("[MPI_CLIENT_COMM] [mpi_client_comm_disconnect] Disconnect\n");
+<<<<<<< HEAD
 
   ret = MPI_Comm_disconnect(&(params->server));
+=======
+  ret = MPI_Comm_free(&(params->server));
+  // ret = MPI_Comm_disconnect(&(params->server));
+>>>>>>> origin/beta_spark
   if (MPI_SUCCESS != ret)
   {
     printf("[MPI_CLIENT_COMM] [mpi_client_comm_disconnect] ERROR: MPI_Comm_disconnect fails\n");

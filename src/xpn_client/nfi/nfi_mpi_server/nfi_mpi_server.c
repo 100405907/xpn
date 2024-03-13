@@ -19,9 +19,13 @@
  *
  */
 
+<<<<<<< HEAD
 
 /* ... Include / Inclusion ........................................... */
 
+=======
+/* ... Include / Inclusion ........................................... */
+>>>>>>> origin/beta_spark
 #include "nfi_mpi_server.h"
 
 

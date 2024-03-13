@@ -18,7 +18,10 @@
  *  along with Expand.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/beta_spark
 /* ... Include / Inclusion ........................................... */
 
 #include "nfi/nfi_worker.h"

@@ -18,8 +18,12 @@
  *  along with Expand.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+<<<<<<< HEAD
 
 
+=======
+// #define DEBUG
+>>>>>>> origin/beta_spark
 /* ... Include / Inclusion ........................................... */
 
 #include "all_system.h"

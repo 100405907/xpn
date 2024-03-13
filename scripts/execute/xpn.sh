@@ -97,7 +97,11 @@ start_xpn_servers() {
     mpiexec -np       "${NODE_NUM}" \
             -hostfile "${HOSTFILE}" \
             -genv LD_LIBRARY_PATH ../mxml/lib:"$LD_LIBRARY_PATH" \
+<<<<<<< HEAD
             "${BASE_DIR}"/../../src/mpi_server/xpn_mpi_server -ns "${WORKDIR}"/dns.txt "${ARGS}" &
+=======
+            "${BASE_DIR}"/../../src/mpi_server/xpn_mpi_server -ns "${WORKDIR}"/dns.txt -t pool "${ARGS}" &
+>>>>>>> origin/beta_spark
   elif [[ ${SERVER_TYPE} == "sck" ]]; then
     mpiexec -np       "${NODE_NUM}" \
             -hostfile "${HOSTFILE}" \

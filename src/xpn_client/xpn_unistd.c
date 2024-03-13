@@ -19,7 +19,10 @@
  *
  */
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/beta_spark
 /* ... Include / Inclusion ........................................... */
 
 #include "xpn.h"

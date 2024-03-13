@@ -19,7 +19,11 @@
  *
  */
 
+<<<<<<< HEAD
 
+=======
+// #define DEBUG
+>>>>>>> origin/beta_spark
 /* ... Include / Inclusion ........................................... */
 
 #include "mpi_server_ops.h"
@@ -906,6 +910,10 @@ void mpi_server_op_getattr ( mpi_server_param_st *params, MPI_Comm sd, struct st
     return;
   }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/beta_spark
   debug_info("[Server=%d] [MPI_SERVER_OPS] [mpi_server_op_getattr] >> Begin\n", params->rank);
   debug_info("[Server=%d] [MPI_SERVER_OPS] [mpi_server_op_getattr] stat(%s)\n", params->rank, head->u_st_mpi_server_msg.op_getattr.path);
 
@@ -918,6 +926,10 @@ void mpi_server_op_getattr ( mpi_server_param_st *params, MPI_Comm sd, struct st
 
   mpi_server_comm_write_data(params, sd,(char *)&req,sizeof(struct st_mpi_server_attr_req), rank_client_id, tag_client_id);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/beta_spark
   debug_info("[Server=%d] [MPI_SERVER_OPS] [mpi_server_op_getattr] stat(%s)=%d\n", params->rank, head->u_st_mpi_server_msg.op_getattr.path, req.status);
   debug_info("[Server=%d] [MPI_SERVER_OPS] [mpi_server_op_getattr] << End\n", params->rank);
 }
