@@ -147,7 +147,6 @@ void mpi_server_finish()
 {
   // Wait and finalize for all current workers
   debug_info("[TH_ID=%d] [MPI_SERVER] [mpi_server_up] Workers destroy\n", 0);
-  printf(">>>>>>>>>>>>>>>>>>>>SERVER FINISH<<<<<<<<<<<<<<<<<<<<<<<<");
 
   base_workers_destroy(&worker1);
   base_workers_destroy(&worker2);
