@@ -54,14 +54,15 @@ public class Expand extends FileSystem {
 		System.out.println("------------------ENTRO A CLOSE------------------");
 
 		this.initialized = false;
-		// this.xpn.jni_xpn_destroy();
+		this.xpn.jni_xpn_destroy();
+		super.close();
 
 		System.out.println("------------------SALGO DE CLOSE------------------");
 	}
 
 	public void loadFileToExpand(Configuration conf, Path src, Path dst) throws IOException {
-    	FSDataInputStream is = null;
-    	FSDataOutputStream os = null;
+		FSDataInputStream is = null;
+		FSDataOutputStream os = null;
 
 		try {
 			FileSystem fs = src.getFileSystem(conf);
@@ -76,7 +77,7 @@ public class Expand extends FileSystem {
 			is.close();
 			os.close();
 		}
-  	}
+	}
 
 	@Override
 	public FileStatus getFileStatus (Path path){
@@ -84,9 +85,9 @@ public class Expand extends FileSystem {
 
 		path = removeURI(path);
 		System.out.println("PATH QUE ENTRA: " + path.toString());
-		
+
 		if (!exists(path)) return null;
-		
+
 		Stat stats = this.xpn.jni_xpn_stat(path.toString());
 		boolean isdir = this.xpn.jni_xpn_isDir(stats.st_mode) != 0;
 		String username = this.xpn.jni_xpn_getUsername((int) stats.st_uid);
@@ -96,14 +97,14 @@ public class Expand extends FileSystem {
 		System.out.println("-------------------SALGO DE GETFILESTATUS--------------------------");
 
 		return new FileStatus(stats.st_size, isdir, 0, stats.st_blksize,
-			       stats.st_mtime * 1000, stats.st_atime * 1000, 
-			       permission, username, groupname, path);
+					stats.st_mtime * 1000, stats.st_atime * 1000, 
+					permission, username, groupname, path);
 	}
 
 	@Override
-    public boolean mkdirs(Path path, FsPermission permission) throws IOException {
+	public boolean mkdirs(Path path, FsPermission permission) throws IOException {
 		System.out.println("------------------ENTRO A MKDIRS------------------");
-		
+
 		path = removeURI(path);
 		String relPath = "";
 		String absPath;
@@ -123,9 +124,9 @@ public class Expand extends FileSystem {
 	}
 
 	@Override
-    	public Path getWorkingDirectory() {
-        	return this.workingDirectory;
-    	}
+		public Path getWorkingDirectory() {
+			return this.workingDirectory;
+		}
 
 	@Override
 	public void setWorkingDirectory(Path new_dir) {
@@ -134,19 +135,19 @@ public class Expand extends FileSystem {
 	}
 
 	@Override
-    public FileStatus[] listStatus(Path f){
+	public FileStatus[] listStatus(Path f){
 		System.out.println("----------------------ENTRO A LISTSTATUS---------------------");
 		f = removeURI(f);
-		
+
 		if (!exists(f))
 			return null;
-		
+
 		if (!isDir(f)){
 			FileStatus [] list = new FileStatus[1];
 			list[0] = getFileStatus(f);
 			return list;
 		}
-		
+
 		String str [] = this.xpn.jni_xpn_getDirContent(f.toString());
 		FileStatus list [] = new FileStatus [str.length - 2];
 		for (int i = 0; i < list.length; i++){
@@ -160,7 +161,7 @@ public class Expand extends FileSystem {
 	}
 
 	@Override
-    public boolean delete(Path path, boolean recursive){
+	public boolean delete(Path path, boolean recursive){
 
 		System.out.println("------------------ENTRO A DELETE------------------");
 		path = removeURI(path);
@@ -185,7 +186,7 @@ public class Expand extends FileSystem {
 	}
 
 	@Override
-    public boolean rename(Path src, Path dst){
+	public boolean rename(Path src, Path dst){
 		System.out.println("------------------ENTRO A RENAME------------------");
 
 		src = removeURI(src);
@@ -242,7 +243,7 @@ public class Expand extends FileSystem {
 	}
 
 	@Override
-    public FSDataInputStream open(Path f, int bufferSize){
+	public FSDataInputStream open(Path f, int bufferSize){
 		System.out.println("------------------ENTRO A OPEN------------------");
 
 		f = removeURI(f);
@@ -252,7 +253,7 @@ public class Expand extends FileSystem {
 	}
 
 	@Override
-    public FSDataInputStream open(Path f){
+	public FSDataInputStream open(Path f){
 		return open(f, bufsize);
 	}
 

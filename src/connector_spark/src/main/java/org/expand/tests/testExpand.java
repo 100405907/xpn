@@ -21,7 +21,7 @@ public class testExpand{
             conf.set("fs.xpn.impl", "Expand");
             xpn.initialize(uri, conf);
             System.out.println("ANTES DE COPY");
-            xpn.loadFileToExpand(conf, new Path("file:///home/lab/data/2000-0.txt"), new Path("xpn:///xpn/wc/quixotestr"));
+            xpn.loadFileToExpand(conf, new Path("file:///home/resh000186/data/2000-0.txt"), new Path("xpn:///xpn/quixote"));
             System.out.println("DESPUES DE COPY");
         }catch (Exception e){
             System.out.println(e);
