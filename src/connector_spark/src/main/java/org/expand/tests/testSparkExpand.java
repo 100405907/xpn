@@ -21,6 +21,7 @@ import java.net.URI;
 import scala.reflect.ClassTag;
 import scala.reflect.ClassTag$;
 
+import org.expand.hadoop.Expand;
 import org.expand.spark.ExpandOutputFormat;
 import org.expand.spark.ExpandInputFormat;
 import org.expand.spark.ExpandSparkFunctions;
@@ -39,7 +40,16 @@ public class testSparkExpand {
 
 		Configuration xpnconf = sc.hadoopConfiguration();
 
+		Expand xpn = new Expand();
 		String filePath = "xpn:///xpn/quixote";
+		String input = "file:///home/resh000186/data/quixote";
+
+		try{
+			xpn.initialize(URI.create("xpn:///"), xpnconf);
+			xpn.loadFileToExpand(xpnconf, new Path(input), new Path(filePath));
+		} catch (Exception e) {
+			System.out.println("Excepcion en la carga");
+		}
     	
 		long startTime = System.nanoTime();
 
