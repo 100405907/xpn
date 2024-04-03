@@ -9,7 +9,7 @@ import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FSDataInputStream;
 
-public class testExpand{
+public class loadQuixote{
 
         public static void main(String[] args) {
 
