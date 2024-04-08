@@ -67,7 +67,7 @@ public class Expand extends FileSystem {
 		try {
 			FileSystem fs = src.getFileSystem(conf);
 			is = fs.open(src, 4096);
-			os = create(dst, FsPermission.getFileDefault(), false, 4096, (short) 0, (long) 4096, null);
+			os = create(dst, FsPermission.getFileDefault(), true, 4096, (short) 0, (long) 4096, null);
 			byte[] buffer = new byte[1024];
 			int length;
 
