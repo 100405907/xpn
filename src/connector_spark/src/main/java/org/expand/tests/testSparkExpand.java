@@ -42,7 +42,7 @@ public class testSparkExpand {
 
 		Expand xpn = new Expand();
 		String filePath = "xpn:///xpn/quixote";
-		String input = "file:///home/resh000186/data/quixote";
+		String input = "file:///beegfs/home/javier.garciablas/gsotodos/data/quixote";
 
 		try{
 			xpn.initialize(URI.create("xpn:///"), xpnconf);
