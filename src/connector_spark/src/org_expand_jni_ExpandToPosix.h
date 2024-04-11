@@ -57,6 +57,14 @@ JNIEXPORT jint JNICALL Java_org_expand_jni_ExpandToPosix_jni_1xpn_1destroy
 
 /*
  * Class:     org_expand_jni_ExpandToPosix
+ * Method:    jni_xpn_exist
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_org_expand_jni_ExpandToPosix_jni_1xpn_1exist
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_expand_jni_ExpandToPosix
  * Method:    jni_xpn_fstat
  * Signature: (I)Lorg/expand/jni/Stat;
  */

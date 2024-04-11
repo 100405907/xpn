@@ -27,6 +27,8 @@ public class ExpandToPosix {
 	
 	public native int jni_xpn_destroy();
 
+	public native int jni_xpn_exist(String path);
+
 	public native Stat jni_xpn_fstat(int fd);
 
 	public native String jni_xpn_getcwd(String path, long size);

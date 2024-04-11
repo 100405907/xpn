@@ -157,6 +157,21 @@ JNIEXPORT jint JNICALL Java_org_expand_jni_ExpandToPosix_jni_1xpn_1destroy
     return xpn_destroy();
 }
 
+JNIEXPORT jint JNICALL Java_org_expand_jni_ExpandToPosix_jni_1xpn_1exist
+  (JNIEnv *env, jobject obj, jstring path){
+
+	int path_len = (*env)->GetStringLength(env, path);
+	char cpath[path_len + 1];
+	(*env)->GetStringUTFRegion(env, path, 0, path_len, cpath);
+	struct stat stats;
+        
+	int i = xpn_stat(cpath, &stats);
+	if (i != 0) return -1;
+
+	return 0;
+
+  }
+
 JNIEXPORT jobject JNICALL Java_org_expand_jni_ExpandToPosix_jni_1xpn_1fstat
   (JNIEnv *env, jobject obj, jint fd){
 	
