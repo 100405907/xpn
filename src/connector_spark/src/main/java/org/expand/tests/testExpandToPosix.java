@@ -16,9 +16,10 @@ public class testExpandToPosix {
 
 		try {
 			xpn.jni_xpn_init();
-			int fd = xpn.jni_xpn_open("/xpn/newtestwrfile", xpn.flags.O_RDWR);
-			System.out.println("FD OPEN: " + fd);
-			System.out.println("BYTES LEIDOS: " + xpn.jni_xpn_read(fd, buf, 65536));
+			int fd = xpn.jni_xpn_creat("/xpn/teststatfile", xpn.flags.O_RDWR);
+			System.out.println("FD CREATED");
+			int i = xpn.jni_xpn_exist("/xpn/teststatfile");
+			System.out.println("DESPUES DE EXIST: " + i);
 			xpn.jni_xpn_close(fd);
 			
 			xpn.jni_xpn_destroy();
