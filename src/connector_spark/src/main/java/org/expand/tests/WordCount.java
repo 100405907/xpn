@@ -25,9 +25,9 @@ public class WordCount {
     Expand xpn = new Expand();
     xpn.initialize(URI.create("xpn:///"), conf);
     Path input=new Path("xpn:///xpn/quixote");
-    Path output=new Path("xpn:///xpn/wc-out");
-    // xpn.delete(output, true);
+    Path output=new Path("xpn:///xpn/wc-quixote-hadoop");
     long startTime = System.nanoTime();
+    xpn.delete(output, true);
     Job j=new Job(conf,"wordcount");
     j.setJarByClass(WordCount.class);
     j.setMapperClass(MapForWordCount.class);
