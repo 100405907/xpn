@@ -18,14 +18,14 @@ import org.expand.hadoop.Expand;
 public class WordCount {
   public static void main(String [] args) throws Exception {
     Configuration conf=new Configuration();
-    // conf.set("fs.defaultFS", "xpn:///");
-    // conf.set("fs.xpn.impl", "org.expand.hadoop.Expand");
-    // conf.set("mapreduce.job.split.metainfo.maxsize", "-1");
-    // conf.set("mapred.child.java.opts", "-Xmx4096m");
-    // Expand xpn = new Expand();
-    // xpn.initialize(URI.create("xpn:///"), conf);
-    Path input=new Path("hdfs://localhost:9000/2000-0.txt");
-    Path output=new Path("hdfs://localhost:9000/wc-out");
+    conf.set("fs.defaultFS", "xpn:///");
+    conf.set("fs.xpn.impl", "org.expand.hadoop.Expand");
+    conf.set("mapreduce.job.split.metainfo.maxsize", "-1");
+    conf.set("mapred.child.java.opts", "-Xmx4096m");
+    Expand xpn = new Expand();
+    xpn.initialize(URI.create("xpn:///"), conf);
+    Path input=new Path("xpn:///xpn/quixote");
+    Path output=new Path("xpn:///xpn/wc-out");
     // xpn.delete(output, true);
     long startTime = System.nanoTime();
     Job j=new Job(conf,"wordcount");
