@@ -21,7 +21,7 @@ public class loadQuixote{
             conf.set("fs.xpn.impl", "Expand");
             xpn.initialize(uri, conf);
             System.out.println("ANTES DE COPY");
-            xpn.loadFileToExpand(conf, new Path("file:///home/lab/data/2000-0.txt"), new Path("xpn:///xpn/kk"));
+            xpn.loadFileToExpand(conf, new Path("file:///home/javier.garciablas/gsotodos/data/wikipedia"), new Path("xpn:///xpn/wikipedia"));
             System.out.println("DESPUES DE COPY");
         }catch (Exception e){
             System.out.println(e);

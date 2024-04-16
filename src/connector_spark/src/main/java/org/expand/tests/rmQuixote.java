@@ -21,8 +21,7 @@ public class rmQuixote{
             conf.set("fs.xpn.impl", "Expand");
             xpn.initialize(uri, conf);
             System.out.println("ANTES DE COPY");
-            xpn.delete(new Path("xpn:///xpn/quixote"), false);
-            xpn.delete(new Path("xpn:///xpn/wc-quixote"), false);
+            xpn.delete(new Path("xpn:///xpn/wikipedia"), false);
             System.out.println("DESPUES DE COPY");
         }catch (Exception e){
             System.out.println(e);

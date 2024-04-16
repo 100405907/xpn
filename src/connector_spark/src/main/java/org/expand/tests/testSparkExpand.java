@@ -42,14 +42,6 @@ public class testSparkExpand {
 
 		Expand xpn = new Expand();
 		String filePath = "xpn:///xpn/wikipedia";
-		String input = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia";
-
-		try{
-			xpn.initialize(URI.create("xpn:///"), xpnconf);
-			xpn.loadFileToExpand(xpnconf, new Path(input), new Path(filePath));
-		} catch (Exception e) {
-			System.out.println("Excepcion en la carga");
-		}
     	
 		long startTime = System.nanoTime();
 
