@@ -1,30 +1,56 @@
 package org.expand.tests;
 
-import org.expand.hadoop.Expand;
+import org.apache.spark.expand.ExpandRDDFunctions;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
+import scala.Tuple2;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.List;
+import org.apache.spark.sql.SparkSession;
+
 import org.apache.hadoop.fs.Path;
-import java.net.URI;
+import org.apache.hadoop.mapred.JobConf;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.permission.FsPermission;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.FSDataInputStream;
+import java.net.URI;
+import scala.reflect.ClassTag;
+import scala.reflect.ClassTag$;
 
-public class loadQuixote{
+import org.expand.hadoop.Expand;
+import org.expand.spark.ExpandOutputFormat;
+import org.expand.spark.ExpandInputFormat;
+import org.expand.spark.ExpandSparkFunctions;
 
-        public static void main(String[] args) {
+public class loadQuixote {
+	public static void main(String[] args) {
 
-        try{
-            Expand xpn = new Expand();
-            Configuration conf = new Configuration();
-            URI uri = URI.create("xpn:///");
-            conf.set("fs.defaultFS", "xpn:///");
-            conf.set("fs.xpn.impl", "Expand");
-            xpn.initialize(uri, conf);
-            System.out.println("ANTES DE COPY");
-            xpn.loadFileToExpand(conf, new Path("file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia"), new Path("xpn:///xpn/wikipedia"));
-            System.out.println("DESPUES DE COPY");
-        }catch (Exception e){
-            System.out.println(e);
-        }
+		JavaSparkContext sc = new JavaSparkContext(new SparkConf().setAppName("wc")
+			.set("spark.hadoop.fs.defaultFS", "xpn:///")
+			.set("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand"));
+
+		SparkSession spark = SparkSession.builder().appName("wc")
+			.config("spark.hadoop.fs.defaultFS", "xpn:///")
+			.config("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand")
+			.getOrCreate();
+
+		Configuration xpnconf = sc.hadoopConfiguration();
+
+		Expand xpn = new Expand();
+		String filePath = "xpn:///xpn/wikipedia";
+		String input = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia";
+
+		try{
+			xpn.initialize(URI.create("xpn:///"), xpnconf);
+			xpn.loadFileToExpand(xpnconf, new Path(input), new Path(filePath));
+		} catch (Exception e) {
+			System.out.println("Excepcion en la carga");
+		}
+
+		sc.stop();
 	}
 }
