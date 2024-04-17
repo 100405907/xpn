@@ -42,7 +42,7 @@ public class loadQuixote {
 
 		Expand xpn = new Expand();
 		String filePath = "xpn:///xpn/wikipedia";
-		String input = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia";
+		String input = "file:///home/lab/data/2000-0.txt";
 
 		try{
 			xpn.initialize(URI.create("xpn:///"), xpnconf);
