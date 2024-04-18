@@ -20,7 +20,7 @@ public class ExpandInputFormat<K, V> extends FileInputFormat<K, V> {
 
     @Override
     protected boolean isSplitable(JobContext context, Path file) {
-        return super.isSplitable(context,file);
+        return false;
     }
 }
 
