@@ -20,7 +20,7 @@ public class ExpandInputStream extends InputStream implements Closeable {
 		this.xpn = new ExpandToPosix();
 		this.flags = xpn.jni_xpn_createFlags();
 		this.path = path;
-		this.fd = xpn.jni_xpn_open(path, flags.O_RDWR);
+		this.fd = xpn.jni_xpn_open(path, flags.O_RDONLY);
 		this.fileSize = xpn.jni_xpn_lseek(fd, 0, flags.SEEK_END);
 		if (fileSize < 0 || xpn.jni_xpn_lseek(fd, 0, flags.SEEK_SET) < 0) {
 			System.out.println("WRONG FILE SIZE");
