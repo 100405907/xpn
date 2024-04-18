@@ -59,7 +59,7 @@ public class testSparkExpand {
 			Text.class,
 			String.class,
 			sc.hadoopConfiguration()
-		);
+		).repartition(8);
 
 		JavaRDD<String> lines = rdd.map(tuple -> tuple._2());
 
