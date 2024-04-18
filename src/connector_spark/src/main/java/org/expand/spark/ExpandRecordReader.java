@@ -1,328 +1,215 @@
 package org.expand.spark;
 
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.InputSplit;
-import org.apache.hadoop.mapreduce.lib.input.FileSplit;
-import org.apache.hadoop.mapreduce.RecordReader;
-import org.apache.hadoop.mapreduce.TaskAttemptContext;
-
 import java.io.IOException;
 
-public class ExpandRecordReader<K, V> extends RecordReader<K, V> {
+import org.apache.hadoop.classification.InterfaceAudience;
+import org.apache.hadoop.classification.InterfaceStability;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FutureDataInputStreamBuilder;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.Seekable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.compress.CodecPool;
+import org.apache.hadoop.io.compress.CompressionCodec;
+import org.apache.hadoop.io.compress.SplitCompressionInputStream;
+import org.apache.hadoop.io.compress.SplittableCompressionCodec;
+import org.apache.hadoop.io.compress.CompressionCodecFactory;
+import org.apache.hadoop.io.compress.Decompressor;
+import org.apache.hadoop.mapreduce.InputSplit;
+import org.apache.hadoop.mapreduce.MRJobConfig;
+import org.apache.hadoop.mapreduce.RecordReader;
+import org.apache.hadoop.mapreduce.TaskAttemptContext;
+import org.apache.hadoop.util.functional.FutureIO;
+import org.apache.hadoop.mapreduce.lib.input.SplitLineReader;
+import org.apache.hadoop.mapreduce.lib.input.FileSplit;
+import org.apache.hadoop.mapreduce.lib.input.CompressedSplitLineReader;
+import org.apache.hadoop.mapreduce.lib.input.UncompressedSplitLineReader;
 
-    private K key;
-    private V value;
-    private long start;
-    private long end;
-    private long pos;
-    private FSDataInputStream fsin;
-    private static final int bufsize = 1048576;
-    // private byte[] recordDelimiterBytes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    // public ExpandRecordReader(byte[] recordDelimiter) {
-    //     this.recordDelimiterBytes = recordDelimiter;
-    // }
+@InterfaceAudience.LimitedPrivate({"MapReduce", "Pig"})
+@InterfaceStability.Evolving
+public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
+  private static final Logger LOG =
+      LoggerFactory.getLogger(ExpandRecordReader.class);
+  public static final String MAX_LINE_LENGTH = 
+    "mapreduce.input.linerecordreader.line.maxlength";
 
-    @Override
-    public void initialize(InputSplit split, TaskAttemptContext context) throws IOException, InterruptedException {
-        FileSplit fileSplit = (FileSplit) split;
-        this.start = fileSplit.getStart();
-        this.end = start + fileSplit.getLength();
-        this.pos = start;
-        Path file = fileSplit.getPath();
-	    this.fsin = file.getFileSystem(context.getConfiguration()).open(file);
-        this.fsin.seek(start);
-    }
+  private long start;
+  private long pos;
+  private long end;
+  private SplitLineReader in;
+  private FSDataInputStream fileIn;
+  private Seekable filePosition;
+  private int maxLineLength;
+  private LongWritable key;
+  private Text value;
+  private boolean isCompressedInput;
+  private Decompressor decompressor;
+  private byte[] recordDelimiterBytes;
 
-    @Override
-    public boolean nextKeyValue() throws IOException, InterruptedException {
-        if (pos < end) {
-            key = (K) new Long(pos);
-	        byte[] buffer = new byte[bufsize];
-            int bytesRead = fsin.read(buffer);
-            if (bytesRead > 0) {
-                value = (V) new String(buffer, 0, bytesRead);
-                pos += bytesRead;
-                return true;
-            }
-        }
-        return false;
-    }
+  public ExpandRecordReader() {
+  }
 
-    @Override
-    public K getCurrentKey() throws IOException, InterruptedException {
-        return key;
-    }
+  public ExpandRecordReader(byte[] recordDelimiter) {
+    this.recordDelimiterBytes = recordDelimiter;
+  }
 
-    @Override
-    public V getCurrentValue() throws IOException, InterruptedException {
-        return value;
-    }
+  public void initialize(InputSplit genericSplit,
+                         TaskAttemptContext context) throws IOException {
+    FileSplit split = (FileSplit) genericSplit;
+    Configuration job = context.getConfiguration();
+    this.maxLineLength = job.getInt(MAX_LINE_LENGTH, Integer.MAX_VALUE);
+    start = split.getStart();
+    end = start + split.getLength();
+    final Path file = split.getPath();
 
-    @Override
-    public float getProgress() throws IOException, InterruptedException {
-        if (start == end) {
-            return 0.0f;
-        } else {
-            return Math.min(1.0f, (pos - start) / (float) (end - start));
-        }
-    }
-
-    @Override
-    public void close() throws IOException {
-        if (fsin != null) {
-            fsin.close();
-        }
-    }
-}
-
-
-// package org.expand.spark;
-
-// import java.io.IOException;
-
-// import org.apache.hadoop.classification.InterfaceAudience;
-// import org.apache.hadoop.classification.InterfaceStability;
-// import org.apache.hadoop.conf.Configuration;
-// import org.apache.hadoop.fs.FSDataInputStream;
-// import org.apache.hadoop.fs.FutureDataInputStreamBuilder;
-// import org.apache.hadoop.fs.Path;
-// import org.apache.hadoop.fs.Seekable;
-// import org.apache.hadoop.io.LongWritable;
-// import org.apache.hadoop.io.Text;
-// import org.apache.hadoop.io.compress.CodecPool;
-// import org.apache.hadoop.io.compress.CompressionCodec;
-// import org.apache.hadoop.io.compress.SplitCompressionInputStream;
-// import org.apache.hadoop.io.compress.SplittableCompressionCodec;
-// import org.apache.hadoop.io.compress.CompressionCodecFactory;
-// import org.apache.hadoop.io.compress.Decompressor;
-// import org.apache.hadoop.mapreduce.InputSplit;
-// import org.apache.hadoop.mapreduce.MRJobConfig;
-// import org.apache.hadoop.mapreduce.RecordReader;
-// import org.apache.hadoop.mapreduce.TaskAttemptContext;
-// import org.apache.hadoop.util.functional.FutureIO;
-// import org.apache.hadoop.mapreduce.lib.input.SplitLineReader;
-// import org.apache.hadoop.mapreduce.lib.input.FileSplit;
-// import org.apache.hadoop.mapreduce.lib.input.CompressedSplitLineReader;
-// import org.apache.hadoop.mapreduce.lib.input.UncompressedSplitLineReader;
-
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
-
-// /**
-//  * Treats keys as offset in file and value as line. 
-//  */
-// // @InterfaceAudience.LimitedPrivate({"MapReduce", "Pig"})
-// @InterfaceAudience.Public
-// @InterfaceStability.Evolving
-// public class ExpandRecordReader extends RecordReader<LongWritable, Text> {
-//   private static final Logger LOG =
-//       LoggerFactory.getLogger(ExpandRecordReader.class);
-//   public static final String MAX_LINE_LENGTH = 
-//     "mapreduce.input.linerecordreader.line.maxlength";
-
-//   private long start;
-//   private long pos;
-//   private long end;
-//   private SplitLineReader in;
-//   private FSDataInputStream fileIn;
-//   private Seekable filePosition;
-//   private int maxLineLength;
-//   private LongWritable key;
-//   private Text value;
-//   private boolean isCompressedInput;
-//   private Decompressor decompressor;
-//   private byte[] recordDelimiterBytes;
-
-//   public ExpandRecordReader() {
-//   }
-
-//   public ExpandRecordReader(byte[] recordDelimiter) {
-//     this.recordDelimiterBytes = recordDelimiter;
-//   }
-
-//   public void initialize(InputSplit genericSplit,
-//                          TaskAttemptContext context) throws IOException {
-//     FileSplit split = (FileSplit) genericSplit;
-//     Configuration job = context.getConfiguration();
-//     this.maxLineLength = job.getInt(MAX_LINE_LENGTH, Integer.MAX_VALUE);
-//     start = split.getStart();
-//     end = start + split.getLength();
-//     final Path file = split.getPath();
-
-//     // open the file and seek to the start of the split
-//     final FutureDataInputStreamBuilder builder =
-//         file.getFileSystem(job).openFile(file);
-//     // the start and end of the split may be used to build
-//     // an input strategy.
-//     builder.optLong("fs.option.openfile.split.start", start);
-//     builder.optLong("fs.option.openfile.split.end", end);
-//     FutureIO.propagateOptions(builder, job,
-//         MRJobConfig.INPUT_FILE_OPTION_PREFIX,
-//         MRJobConfig.INPUT_FILE_MANDATORY_PREFIX);
-//     fileIn = FutureIO.awaitFuture(builder.build());
+    fileIn = file.getFileSystem(context.getConfiguration()).open(file);
     
-//     CompressionCodec codec = new CompressionCodecFactory(job).getCodec(file);
-//     if (null!=codec) {
-//       isCompressedInput = true;
-//       decompressor = CodecPool.getDecompressor(codec);
-//       if (codec instanceof SplittableCompressionCodec) {
-//         final SplitCompressionInputStream cIn =
-//           ((SplittableCompressionCodec)codec).createInputStream(
-//             fileIn, decompressor, start, end,
-//             SplittableCompressionCodec.READ_MODE.BYBLOCK);
-//         in = new CompressedSplitLineReader(cIn, job,
-//             this.recordDelimiterBytes);
-//         start = cIn.getAdjustedStart();
-//         end = cIn.getAdjustedEnd();
-//         filePosition = cIn;
-//       } else {
-//         if (start != 0) {
-//           // So we have a split that is only part of a file stored using
-//           // a Compression codec that cannot be split.
-//           throw new IOException("Cannot seek in " +
-//               codec.getClass().getSimpleName() + " compressed stream");
-//         }
+    CompressionCodec codec = new CompressionCodecFactory(job).getCodec(file);
+    if (null!=codec) {
+      isCompressedInput = true;
+      decompressor = CodecPool.getDecompressor(codec);
+      if (codec instanceof SplittableCompressionCodec) {
+        final SplitCompressionInputStream cIn =
+          ((SplittableCompressionCodec)codec).createInputStream(
+            fileIn, decompressor, start, end,
+            SplittableCompressionCodec.READ_MODE.BYBLOCK);
+        in = new CompressedSplitLineReader(cIn, job,
+            this.recordDelimiterBytes);
+        start = cIn.getAdjustedStart();
+        end = cIn.getAdjustedEnd();
+        filePosition = cIn;
+      } else {
+        if (start != 0) {
 
-//         in = new SplitLineReader(codec.createInputStream(fileIn,
-//             decompressor), job, this.recordDelimiterBytes);
-//         filePosition = fileIn;
-//       }
-//     } else {
-//       fileIn.seek(start);
-//       in = new UncompressedSplitLineReader(
-//           fileIn, job, this.recordDelimiterBytes, split.getLength());
-//       filePosition = fileIn;
-//     }
-//     // If this is not the first split, we always throw away first record
-//     // because we always (except the last split) read one extra line in
-//     // next() method.
-//     if (start != 0) {
-//       start += in.readLine(new Text(), 0, maxBytesToConsume(start));
-//     }
-//     this.pos = start;
-//   }
+          throw new IOException("Cannot seek in " +
+              codec.getClass().getSimpleName() + " compressed stream");
+        }
+
+        in = new SplitLineReader(codec.createInputStream(fileIn,
+            decompressor), job, this.recordDelimiterBytes);
+        filePosition = fileIn;
+      }
+    } else {
+      fileIn.seek(start);
+      in = new UncompressedSplitLineReader(
+          fileIn, job, this.recordDelimiterBytes, split.getLength());
+      filePosition = fileIn;
+    }
+
+    if (start != 0) {
+      start += in.readLine(new Text(), 0, maxBytesToConsume(start));
+    }
+    this.pos = start;
+  }
   
 
-//   private int maxBytesToConsume(long pos) {
-//     return isCompressedInput
-//       ? Integer.MAX_VALUE
-//       : (int) Math.max(Math.min(Integer.MAX_VALUE, end - pos), maxLineLength);
-//   }
+  private int maxBytesToConsume(long pos) {
+    return isCompressedInput
+      ? Integer.MAX_VALUE
+      : (int) Math.max(Math.min(Integer.MAX_VALUE, end - pos), maxLineLength);
+  }
 
-//   private long getFilePosition() throws IOException {
-//     long retVal;
-//     if (isCompressedInput && null != filePosition) {
-//       retVal = filePosition.getPos();
-//     } else {
-//       retVal = pos;
-//     }
-//     return retVal;
-//   }
+  private long getFilePosition() throws IOException {
+    long retVal;
+    if (isCompressedInput && null != filePosition) {
+      retVal = filePosition.getPos();
+    } else {
+      retVal = pos;
+    }
+    return retVal;
+  }
 
-//   private int skipUtfByteOrderMark() throws IOException {
-//     // Strip BOM(Byte Order Mark)
-//     // Text only support UTF-8, we only need to check UTF-8 BOM
-//     // (0xEF,0xBB,0xBF) at the start of the text stream.
-//     int newMaxLineLength = (int) Math.min(3L + (long) maxLineLength,
-//         Integer.MAX_VALUE);
-//     int newSize = in.readLine(value, newMaxLineLength, maxBytesToConsume(pos));
-//     // Even we read 3 extra bytes for the first line,
-//     // we won't alter existing behavior (no backwards incompat issue).
-//     // Because the newSize is less than maxLineLength and
-//     // the number of bytes copied to Text is always no more than newSize.
-//     // If the return size from readLine is not less than maxLineLength,
-//     // we will discard the current line and read the next line.
-//     pos += newSize;
-//     int textLength = value.getLength();
-//     byte[] textBytes = value.getBytes();
-//     if ((textLength >= 3) && (textBytes[0] == (byte)0xEF) &&
-//         (textBytes[1] == (byte)0xBB) && (textBytes[2] == (byte)0xBF)) {
-//       // find UTF-8 BOM, strip it.
-//       LOG.info("Found UTF-8 BOM and skipped it");
-//       textLength -= 3;
-//       newSize -= 3;
-//       if (textLength > 0) {
-//         // It may work to use the same buffer and not do the copyBytes
-//         textBytes = value.copyBytes();
-//         value.set(textBytes, 3, textLength);
-//       } else {
-//         value.clear();
-//       }
-//     }
-//     return newSize;
-//   }
+  private int skipUtfByteOrderMark() throws IOException {
 
-//   public boolean nextKeyValue() throws IOException {
-//     if (key == null) {
-//       key = new LongWritable();
-//     }
-//     key.set(pos);
-//     if (value == null) {
-//       value = new Text();
-//     }
-//     int newSize = 0;
-//     // We always read one extra line, which lies outside the upper
-//     // split limit i.e. (end - 1)
-//     while (getFilePosition() <= end || in.needAdditionalRecordAfterSplit()) {
-//       if (pos == 0) {
-//         newSize = skipUtfByteOrderMark();
-//       } else {
-//         newSize = in.readLine(value, maxLineLength, maxBytesToConsume(pos));
-//         pos += newSize;
-//       }
+    int newMaxLineLength = (int) Math.min(3L + (long) maxLineLength,
+        Integer.MAX_VALUE);
+    int newSize = in.readLine(value, newMaxLineLength, maxBytesToConsume(pos));
 
-//       if ((newSize == 0) || (newSize < maxLineLength)) {
-//         break;
-//       }
+    pos += newSize;
+    int textLength = value.getLength();
+    byte[] textBytes = value.getBytes();
+    if ((textLength >= 3) && (textBytes[0] == (byte)0xEF) &&
+        (textBytes[1] == (byte)0xBB) && (textBytes[2] == (byte)0xBF)) {
+      LOG.info("Found UTF-8 BOM and skipped it");
+      textLength -= 3;
+      newSize -= 3;
+      if (textLength > 0) {
+        textBytes = value.copyBytes();
+        value.set(textBytes, 3, textLength);
+      } else {
+        value.clear();
+      }
+    }
+    return newSize;
+  }
 
-//       // line too long. try again
-//       LOG.info("Skipped line of size " + newSize + " at pos " + 
-//                (pos - newSize));
-//     }
-//     if (newSize == 0) {
-//       key = null;
-//       value = null;
-//       return false;
-//     } else {
-//       return true;
-//     }
-//   }
+  public boolean nextKeyValue() throws IOException {
+    if (key == null) {
+      key = new LongWritable();
+    }
+    key.set(pos);
+    if (value == null) {
+      value = new Text();
+    }
+    int newSize = 0;
 
-//   @Override
-//   public LongWritable getCurrentKey() {
-//     return key;
-//   }
+    while (getFilePosition() <= end || in.needAdditionalRecordAfterSplit()) {
+      if (pos == 0) {
+        newSize = skipUtfByteOrderMark();
+      } else {
+        newSize = in.readLine(value, maxLineLength, maxBytesToConsume(pos));
+        pos += newSize;
+      }
 
-//   @Override
-//   public Text getCurrentValue() {
-//     return value;
-//   }
+      if ((newSize == 0) || (newSize < maxLineLength)) {
+        break;
+      }
 
-//   /**
-//    * Get the progress within the split
-//    */
-//   public float getProgress() throws IOException {
-//     if (start == end) {
-//       return 0.0f;
-//     } else {
-//       return Math.min(1.0f, (getFilePosition() - start) / (float)(end - start));
-//     }
-//   }
+      LOG.info("Skipped line of size " + newSize + " at pos " + 
+               (pos - newSize));
+    }
+    if (newSize == 0) {
+      key = null;
+      value = null;
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @Override
+  public LongWritable getCurrentKey() {
+    return key;
+  }
+
+  @Override
+  public Text getCurrentValue() {
+    return value;
+  }
+
+  public float getProgress() throws IOException {
+    if (start == end) {
+      return 0.0f;
+    } else {
+      return Math.min(1.0f, (getFilePosition() - start) / (float)(end - start));
+    }
+  }
   
-//   public synchronized void close() throws IOException {
-//     try {
-//       if (in != null) {
-//         in.close();
-//       }
-//     } finally {
-//       if (decompressor != null) {
-//         CodecPool.returnDecompressor(decompressor);
-//         decompressor = null;
-//       }
-//     }
-//   }
-// }
+  public synchronized void close() throws IOException {
+    try {
+      if (in != null) {
+        in.close();
+      }
+    } finally {
+      if (decompressor != null) {
+        CodecPool.returnDecompressor(decompressor);
+        decompressor = null;
+      }
+    }
+  }
+}

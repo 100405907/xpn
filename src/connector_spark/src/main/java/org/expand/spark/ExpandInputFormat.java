@@ -23,10 +23,10 @@ public class ExpandInputFormat extends FileInputFormat<LongWritable, Text> {
 
   @Override
   public RecordReader<LongWritable, Text> createRecordReader(InputSplit split, TaskAttemptContext context) {
-    // String delimiter = context.getConfiguration().get("textinputformat.record.delimiter");
-    // byte[] recordDelimiterBytes = null;
-    // if (null != delimiter) recordDelimiterBytes = delimiter.getBytes(StandardCharsets.UTF_8);
-    return new ExpandRecordReader();
+    String delimiter = context.getConfiguration().get("textinputformat.record.delimiter");
+    byte[] recordDelimiterBytes = null;
+    if (null != delimiter) recordDelimiterBytes = delimiter.getBytes(StandardCharsets.UTF_8);
+    return new ExpandRecordReader(recordDelimiterBytes);
   }
 
   @Override
