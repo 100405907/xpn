@@ -52,9 +52,9 @@ public class testSparkStreaming {
 
         jssc.start();
 
-		JavaPairDStream<Text, String> rdd = jssc.fileStream("xpn:///xpn/wc/*", Text.class, String.class, ExpandInputFormat.class);
+		JavaPairDStream<LongWritable, Text> rdd = jssc.fileStream("xpn:///xpn/wc/*", LongWritable.class, Text.class, ExpandInputFormat.class);
 
-		JavaDStream<String> lines = rdd.map(tuple -> tuple._2());
+		JavaDStream<String> lines = rdd.map(tuple -> tuple._2().toString());
 
 		JavaDStream<String> words = lines.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 

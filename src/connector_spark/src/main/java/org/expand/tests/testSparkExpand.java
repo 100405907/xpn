@@ -53,15 +53,15 @@ public class testSparkExpand {
     	
 		long startTime = System.nanoTime();
 
-		JavaPairRDD<Text, String> rdd = sc.newAPIHadoopFile(
+		JavaPairRDD<LongWritable, Text> rdd = sc.newAPIHadoopFile(
 			filePath,
 			ExpandInputFormat.class,
+			LongWritable.class,
 			Text.class,
-			String.class,
 			sc.hadoopConfiguration()
 		).repartition(8);
 
-		JavaRDD<String> lines = rdd.map(tuple -> tuple._2());
+		JavaRDD<String> lines = rdd.map(tuple -> tuple._2().toString());
 
 		JavaRDD<String> words = lines.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
