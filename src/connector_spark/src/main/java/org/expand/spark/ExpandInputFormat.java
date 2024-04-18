@@ -14,6 +14,7 @@ import org.apache.hadoop.mapreduce.JobContext;
 import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.LineRecordReader;
 
 import java.nio.charset.StandardCharsets;
 
@@ -26,7 +27,7 @@ public class ExpandInputFormat extends FileInputFormat<LongWritable, Text> {
     String delimiter = context.getConfiguration().get("textinputformat.record.delimiter");
     byte[] recordDelimiterBytes = null;
     if (null != delimiter) recordDelimiterBytes = delimiter.getBytes(StandardCharsets.UTF_8);
-    return new ExpandRecordReader(recordDelimiterBytes);
+    return new LineRecordReader(recordDelimiterBytes);
   }
 
   @Override
