@@ -24,12 +24,11 @@ public class WordCount {
     conf.set("mapred.child.java.opts", "-Xmx4096m");
     Expand xpn = new Expand();
     xpn.initialize(URI.create("xpn:///"), conf);
-    Path file = new Path("file:///beegfs/javier.garciablas/gsotodos/data/wikipedia");
+    Path file = new Path("file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia");
     Path input=new Path("xpn:///xpn/wikipedia");
     Path output=new Path("xpn:///xpn/wc-wikipedia-hadoop");
-    long startTime = System.nanoTime();
-    xpn.delete(output, true);
     xpn.loadFileToExpand(conf, file, input);
+    long startTime = System.nanoTime();
     Job j=new Job(conf,"wordcount");
     j.setJarByClass(WordCount.class);
     j.setMapperClass(MapForWordCount.class);
