@@ -71,9 +71,9 @@ public class testSparkExpand {
 
 		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2);
 
-		counts.saveAsTextFile("xpn:///xpn/wc-wikipedia");
+		// counts.saveAsTextFile("xpn:///xpn/wc-wikipedia");
 		
-		// ExpandSparkFunctions.writeExpand(counts, "xpn:///xpn/wc-wikipedia", xpnconf);
+		ExpandSparkFunctions.writeExpand(counts, "xpn:///xpn/wc-wikipedia", xpnconf);
     	System.out.println("---------------------------------- " + (System.nanoTime() - startTime) + " ---------------------------------");
 
 		sc.stop();
