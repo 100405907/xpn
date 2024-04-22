@@ -61,7 +61,7 @@ public class testSparkExpand {
 		// 	sc.hadoopConfiguration()
 		// ).repartition(8);
 
-		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/wikipedia");
+		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/wikipedia", 72);
 
 		// JavaRDD<String> lines = rdd.map(tuple -> tuple._2().toString());
 
@@ -70,8 +70,6 @@ public class testSparkExpand {
 		JavaPairRDD<String, Integer> ones = words.mapToPair(s -> new Tuple2<>(s, 1));
 
 		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2);
-
-		// counts.saveAsTextFile("xpn:///xpn/wc-wikipedia");
 		
 		ExpandSparkFunctions.writeExpand(counts, "xpn:///xpn/wc-wikipedia", xpnconf);
     	System.out.println("---------------------------------- " + (System.nanoTime() - startTime) + " ---------------------------------");
