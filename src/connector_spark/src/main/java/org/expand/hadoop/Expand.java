@@ -23,8 +23,8 @@ public class Expand extends FileSystem {
 	private URI uri;
 	private Path workingDirectory;
 	public ExpandFlags flags;
-	private long blksize = 1048576;
-	private int bufsize = 1048576;
+	private long blksize = 67108864;
+	private int bufsize = 67108864;
 	private boolean initialized;
 
 	public Expand(){
