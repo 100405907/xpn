@@ -61,7 +61,7 @@ public class testSparkExpand {
 		// 	sc.hadoopConfiguration()
 		// ).repartition(8);
 
-		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/wikipedia", 250);
+		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/wikipedia", 200);
 
 		// JavaRDD<String> lines = rdd.map(tuple -> tuple._2().toString());
 
