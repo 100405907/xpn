@@ -19,7 +19,7 @@ public class ExpandRecordReader<K, V> extends RecordReader<K, V> {
     private long end;
     private long pos;
     private FSDataInputStream fsin;
-    private static final int bufsize = 67108864;
+    private static final int bufsize = 16777216;
 
     @Override
     public void initialize(InputSplit split, TaskAttemptContext context) throws IOException, InterruptedException {
