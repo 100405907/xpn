@@ -20,7 +20,7 @@ import java.net.URI;
 import scala.reflect.ClassTag;
 import scala.reflect.ClassTag$;
 
-public class testSparkBeegfs {
+public class testSparkHDFS {
 	public static void main(String[] args) {
 
 		JavaSparkContext sc = new JavaSparkContext(new SparkConf().setAppName("wc"));
@@ -30,7 +30,7 @@ public class testSparkBeegfs {
 
 		long startTime = System.nanoTime();
 
-		JavaRDD<String> rdd = sc.textFile("/beegfs/home/javier.garciablas/gsotodos/data/wikipedia");
+		JavaRDD<String> rdd = sc.textFile("hdfs:///wikipedia");
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
@@ -38,7 +38,7 @@ public class testSparkBeegfs {
 
 		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2);
 		
-        counts.saveAsTextFile("/beegfs/home/javier.garciablas/gsotodos/data/wc-wikipedia");
+        counts.saveAsTextFile("hdfs:///wc-wikipedia");
 		
     	System.out.println("---------------------------------- " + (System.nanoTime() - startTime) + " ---------------------------------");
 

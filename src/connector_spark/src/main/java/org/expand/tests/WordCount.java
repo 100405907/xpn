@@ -22,12 +22,15 @@ public class WordCount {
     conf.set("fs.xpn.impl", "org.expand.hadoop.Expand");
     conf.set("mapreduce.job.split.metainfo.maxsize", "-1");
     conf.set("mapred.child.java.opts", "-Xmx4096m");
+
     Expand xpn = new Expand();
+
     xpn.initialize(URI.create("xpn:///"), conf);
     Path file = new Path("file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia");
     Path input=new Path("xpn:///xpn/wikipedia");
     Path output=new Path("xpn:///xpn/wc-wikipedia-hadoop");
     xpn.loadFileToExpand(conf, file, input);
+
     long startTime = System.nanoTime();
     Job j=new Job(conf,"wordcount");
     j.setJarByClass(WordCount.class);
@@ -38,28 +41,30 @@ public class WordCount {
     FileInputFormat.addInputPath(j, input);
     FileOutputFormat.setOutputPath(j, output);
     j.waitForCompletion(true);
+    
     System.out.println("---------------------------------- " + (System.nanoTime() - startTime) + " ---------------------------------");
     System.exit(0);
   }
-public static class MapForWordCount extends Mapper<LongWritable, Text, Text, IntWritable>{ 
-  public void map(LongWritable key, Text value, Context con) throws IOException, InterruptedException {
-    String line = value.toString();
-    String[] words=line.split(" ");
-    for(String word: words ) { 
-      Text outputKey = new Text(word.toUpperCase().trim());
-      IntWritable outputValue = new IntWritable(1);
-      con.write(outputKey, outputValue);
+
+  public static class MapForWordCount extends Mapper<LongWritable, Text, Text, IntWritable>{ 
+    public void map(LongWritable key, Text value, Context con) throws IOException, InterruptedException {
+      String line = value.toString();
+      String[] words=line.split(" ");
+      for(String word: words ) { 
+        Text outputKey = new Text(word.toUpperCase().trim());
+        IntWritable outputValue = new IntWritable(1);
+        con.write(outputKey, outputValue);
+      }
     }
   }
-}
-public static class ReduceForWordCount extends Reducer<Text, IntWritable, Text, IntWritable> {
-  public void reduce(Text word, Iterable<IntWritable> values, Context con) throws IOException, InterruptedException {
-    int sum = 0;
-    for(IntWritable value : values)
-    {
-      sum += value.get();
+
+  public static class ReduceForWordCount extends Reducer<Text, IntWritable, Text, IntWritable> {
+    public void reduce(Text word, Iterable<IntWritable> values, Context con) throws IOException, InterruptedException {
+      int sum = 0;
+      for(IntWritable value : values) {
+        sum += value.get();
+      }
+      con.write(word, new IntWritable(sum));
     }
-    con.write(word, new IntWritable(sum));
   }
- }
 }

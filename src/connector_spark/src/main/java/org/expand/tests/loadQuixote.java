@@ -41,8 +41,8 @@ public class loadQuixote {
 		Configuration xpnconf = sc.hadoopConfiguration();
 
 		Expand xpn = new Expand();
-		String filePath = "xpn:///xpn/quixote";
-		String input = "file:///beegfs/home/javier.garciablas/gsotodos/data/quixote";
+		String filePath = "xpn:///xpn/wikipedia";
+		String input = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia";
 
 		try{
 			xpn.initialize(URI.create("xpn:///"), xpnconf);
