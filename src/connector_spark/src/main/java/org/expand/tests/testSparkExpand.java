@@ -64,7 +64,7 @@ public class testSparkExpand {
 
 		long startTime = System.nanoTime();
 
-		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/");
+		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/wikipedia");
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
