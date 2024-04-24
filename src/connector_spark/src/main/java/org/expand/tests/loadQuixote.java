@@ -29,7 +29,7 @@ import org.expand.spark.ExpandSparkFunctions;
 public class loadQuixote {
 	public static void main(String[] args) {
 
-		JavaSparkContext sc = new JavaSparkContext(new SparkConf().setAppName("wc")
+		JavaSparkContext sc = new JavaSparkContext(new SparkConf().setAppName("ld")
 			.set("spark.hadoop.fs.defaultFS", "xpn:///")
 			.set("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand"));
 
