@@ -40,25 +40,25 @@ public class testSparkExpand {
 
 		Configuration xpnconf = sc.hadoopConfiguration();
 
-		// Expand xpn = new Expand();
-		// String filePath1 = "xpn:///xpn/wikipedia1";
-		// String input1 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia1";
-		// String filePath2 = "xpn:///xpn/wikipedia2";
-		// String input2 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia2";
-		// String filePath3 = "xpn:///xpn/wikipedia3";
-		// String input3 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia3";
-		// String filePath4 = "xpn:///xpn/wikipedia4";
-		// String input4 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia4";
+		Expand xpn = new Expand();
+		String filePath1 = "xpn:///xpn/wikipedia1";
+		String input1 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia1";
+		String filePath2 = "xpn:///xpn/wikipedia2";
+		String input2 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia2";
+		String filePath3 = "xpn:///xpn/wikipedia3";
+		String input3 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia3";
+		String filePath4 = "xpn:///xpn/wikipedia4";
+		String input4 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia4";
 
-		// try{
-		// 	xpn.initialize(URI.create("xpn:///"), xpnconf);
-		// 	xpn.loadFileToExpand(xpnconf, new Path(input1), new Path(filePath1));
-		// 	xpn.loadFileToExpand(xpnconf, new Path(input2), new Path(filePath2));
-		// 	xpn.loadFileToExpand(xpnconf, new Path(input3), new Path(filePath3));
-		// 	xpn.loadFileToExpand(xpnconf, new Path(input4), new Path(filePath4));
-		// } catch (Exception e) {
-		// 	System.out.println("Excepcion en la carga");
-		// }
+		try{
+			xpn.initialize(URI.create("xpn:///"), xpnconf);
+			xpn.loadFileToExpand(xpnconf, new Path(input1), new Path(filePath1));
+			xpn.loadFileToExpand(xpnconf, new Path(input2), new Path(filePath2));
+			xpn.loadFileToExpand(xpnconf, new Path(input3), new Path(filePath3));
+			xpn.loadFileToExpand(xpnconf, new Path(input4), new Path(filePath4));
+		} catch (Exception e) {
+			System.out.println("Excepcion en la carga");
+		}
 
 		long startTime = System.nanoTime();
 
