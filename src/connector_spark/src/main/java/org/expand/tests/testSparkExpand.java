@@ -43,7 +43,7 @@ public class testSparkExpand {
 
 		Expand xpn = new Expand();
 		String filePath1 = "xpn:///xpn/wikipedia";
-		String input1 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia";
+		String input1 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia1";
 		// String filePath2 = "xpn:///xpn/wikipedia/wikipedia2";
 		// String input2 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia2";
 		// String filePath3 = "xpn:///xpn/wikipedia/wikipedia3";
