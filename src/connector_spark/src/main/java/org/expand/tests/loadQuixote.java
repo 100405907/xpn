@@ -29,28 +29,29 @@ import org.expand.spark.ExpandSparkFunctions;
 public class loadQuixote {
 	public static void main(String[] args) {
 
-		JavaSparkContext sc = new JavaSparkContext(new SparkConf().setAppName("ld")
-			.set("spark.hadoop.fs.defaultFS", "xpn:///")
-			.set("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand"));
-
-		SparkSession spark = SparkSession.builder().appName("wc")
-			.config("spark.hadoop.fs.defaultFS", "xpn:///")
-			.config("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand")
-			.getOrCreate();
-
-		Configuration xpnconf = sc.hadoopConfiguration();
-
 		Expand xpn = new Expand();
-		String filePath = "xpn:///xpn/wikipedia";
-		String input = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia";
+		Configuration conf = new Configuration();
+		conf.set("fs.defaultFS", "xpn:///");
+		conf.set("fs.xpn.impl", "Expand");
+		String filePath1 = "xpn:///xpn/wikipedia";
+		String input1 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia";
+		// String filePath2 = "xpn:///xpn/wikipedia/wikipedia2";
+		// String input2 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia2";
+		// String filePath3 = "xpn:///xpn/wikipedia/wikipedia3";
+		// String input3 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia3";
+		// String filePath4 = "xpn:///xpn/wikipedia/wikipedia4";
+		// String input4 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia4";
 
 		try{
-			xpn.initialize(URI.create("xpn:///"), xpnconf);
-			xpn.loadFileToExpand(xpnconf, new Path(input), new Path(filePath));
+			xpn.initialize(URI.create("xpn:///"), conf);
+			// xpn.mkdirs(new Path("xpn:///wikipedia/"), FsPermission.getFileDefault());
+			xpn.loadFileToExpand(conf, new Path(input1), new Path(filePath1));
+			// xpn.loadFileToExpand(xpnconf, new Path(input2), new Path(filePath2));
+			// xpn.loadFileToExpand(xpnconf, new Path(input3), new Path(filePath3));
+			// xpn.loadFileToExpand(xpnconf, new Path(input4), new Path(filePath4));
 		} catch (Exception e) {
 			System.out.println("Excepcion en la carga");
 		}
 
-		sc.stop();
 	}
 }
