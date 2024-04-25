@@ -257,7 +257,7 @@ JNIEXPORT jint JNICALL Java_org_expand_jni_ExpandToPosix_jni_1xpn_1isDir
 	return S_ISDIR(mode);
 }
 
-JNIEXPORT jint JNICALL Java_org_expand_jni_ExpandToPosix_jni_1xpn_1lseek
+JNIEXPORT jlong JNICALL Java_org_expand_jni_ExpandToPosix_jni_1xpn_1lseek
   (JNIEnv *env, jobject obj, jint fd, jlong offset, jlong mode){
 	return xpn_lseek(fd, (off_t) offset, (int) mode);
 }

@@ -43,7 +43,7 @@ public class ExpandToPosix {
 	
 	public native int jni_xpn_isDir(int mode);
 	
-	public native int jni_xpn_lseek(int fd, long offset, long whence);
+	public native long jni_xpn_lseek(int fd, long offset, long whence);
 	
 	public native int jni_xpn_mkdir(String path, short mode);
 	

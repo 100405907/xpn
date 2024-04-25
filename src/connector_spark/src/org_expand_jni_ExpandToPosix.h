@@ -122,9 +122,9 @@ JNIEXPORT jint JNICALL Java_org_expand_jni_ExpandToPosix_jni_1xpn_1isDir
 /*
  * Class:     org_expand_jni_ExpandToPosix
  * Method:    jni_xpn_lseek
- * Signature: (IJJ)I
+ * Signature: (IJJ)J
  */
-JNIEXPORT jint JNICALL Java_org_expand_jni_ExpandToPosix_jni_1xpn_1lseek
+JNIEXPORT jlong JNICALL Java_org_expand_jni_ExpandToPosix_jni_1xpn_1lseek
   (JNIEnv *, jobject, jint, jlong, jlong);
 
 /*
