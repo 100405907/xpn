@@ -46,6 +46,7 @@ public class loadQuixote {
 			xpn.initialize(URI.create("xpn:///"), conf);
 			// xpn.mkdirs(new Path("xpn:///wikipedia/"), FsPermission.getFileDefault());
 			xpn.loadFileToExpand(conf, new Path(input1), new Path(filePath1));
+			xpn.close();
 			// xpn.loadFileToExpand(xpnconf, new Path(input2), new Path(filePath2));
 			// xpn.loadFileToExpand(xpnconf, new Path(input3), new Path(filePath3));
 			// xpn.loadFileToExpand(xpnconf, new Path(input4), new Path(filePath4));
