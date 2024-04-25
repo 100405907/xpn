@@ -70,9 +70,7 @@ public class testSparkExpand {
 
 		JavaPairRDD<String, Integer> ones = words.mapToPair(s -> new Tuple2<>(s, 1));
 
-		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2).sortByKey(true);
-
-		System.out.println(counts.take(10));
+		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2);
 
 		ExpandSparkFunctions.writeExpand(counts, "xpn:///xpn/wc-wikipedia", xpnconf);
     	System.out.println("---------------------------------- " + (System.nanoTime() - startTime) + " ---------------------------------");
