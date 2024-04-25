@@ -30,7 +30,7 @@ public class testSparkBeegfs {
 
 		long startTime = System.nanoTime();
 
-		JavaRDD<String> rdd = sc.textFile("/beegfs/home/javier.garciablas/gsotodos/data/wikipedia");
+		JavaRDD<String> rdd = sc.textFile("/beegfs/home/javier.garciablas/gsotodos/data/wikipedia", 72);
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
