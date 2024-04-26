@@ -65,6 +65,7 @@ public class testSparkExpand {
 		long startTime = System.nanoTime();
 
 		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/wikipedia", 36);
+		System.out.println(rdd.take(10));
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
@@ -73,7 +74,6 @@ public class testSparkExpand {
 		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2).sortByKey(true);
 
 		System.out.println(counts.count());
-		System.out.println(counts.take(10));
 
 		ExpandSparkFunctions.writeExpand(counts, "xpn:///xpn/wc-wikipedia", xpnconf);
 

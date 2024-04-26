@@ -31,7 +31,6 @@ public class testSparkHDFS {
 		long startTime = System.nanoTime();
 
 		JavaRDD<String> rdd = sc.textFile("hdfs:///wikipedia", 36);
-		System.out.println(rdd.take(10));
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
