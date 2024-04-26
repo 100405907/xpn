@@ -41,40 +41,45 @@ public class testSparkExpand {
 
 		Configuration xpnconf = sc.hadoopConfiguration();
 
-		Expand xpn = new Expand();
-		String filePath1 = "xpn:///xpn/wikipedia";
-		String input1 = "file:///beegfs/home/javier.garciablas/gsotodos/data/quixote";
-		// String filePath2 = "xpn:///xpn/wikipedia/wikipedia2";
-		// String input2 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia2";
-		// String filePath3 = "xpn:///xpn/wikipedia/wikipedia3";
-		// String input3 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia3";
-		// String filePath4 = "xpn:///xpn/wikipedia/wikipedia4";
-		// String input4 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia4";
+		// Expand xpn = new Expand();
+		// String filePath1 = "xpn:///xpn/wikipedia";
+		// String input1 = "file:///beegfs/home/javier.garciablas/gsotodos/data/quixote";
+		// // String filePath2 = "xpn:///xpn/wikipedia/wikipedia2";
+		// // String input2 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia2";
+		// // String filePath3 = "xpn:///xpn/wikipedia/wikipedia3";
+		// // String input3 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia3";
+		// // String filePath4 = "xpn:///xpn/wikipedia/wikipedia4";
+		// // String input4 = "file:///beegfs/home/javier.garciablas/gsotodos/data/wikipedia4";
 
-		try{
-			xpn.initialize(URI.create("xpn:///"), xpnconf);
-			// xpn.mkdirs(new Path("xpn:///wikipedia/"), FsPermission.getFileDefault());
-			xpn.loadFileToExpand(xpnconf, new Path(input1), new Path(filePath1));
-			// xpn.loadFileToExpand(xpnconf, new Path(input2), new Path(filePath2));
-			// xpn.loadFileToExpand(xpnconf, new Path(input3), new Path(filePath3));
-			// xpn.loadFileToExpand(xpnconf, new Path(input4), new Path(filePath4));
-		} catch (Exception e) {
-			System.out.println("Excepcion en la carga");
-		}
+		// try{
+		// 	xpn.initialize(URI.create("xpn:///"), xpnconf);
+		// 	// xpn.mkdirs(new Path("xpn:///wikipedia/"), FsPermission.getFileDefault());
+		// 	xpn.loadFileToExpand(xpnconf, new Path(input1), new Path(filePath1));
+		// 	// xpn.loadFileToExpand(xpnconf, new Path(input2), new Path(filePath2));
+		// 	// xpn.loadFileToExpand(xpnconf, new Path(input3), new Path(filePath3));
+		// 	// xpn.loadFileToExpand(xpnconf, new Path(input4), new Path(filePath4));
+		// } catch (Exception e) {
+		// 	System.out.println("Excepcion en la carga");
+		// }
 
 		long startTime = System.nanoTime();
 
-		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/wikipedia");
+		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/quixote");
+		System.out.println(rdd.count());
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
+		System.out.println(words.count());
 
 		JavaPairRDD<String, Integer> ones = words.mapToPair(s -> new Tuple2<>(s, 1));
+		System.out.println(ones.count());
 
 		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2).sortByKey(true);
+		System.out.println(counts.count());
 
 		System.out.println(counts.take(10));
 
-		ExpandSparkFunctions.writeExpand(counts, "xpn:///xpn/wc-wikipedia", xpnconf);
+		ExpandSparkFunctions.writeExpand(counts, "xpn:///xpn/wc-quixote", xpnconf);
+
     	System.out.println("---------------------------------- " + (System.nanoTime() - startTime) + " ---------------------------------");
 
 		sc.stop();
