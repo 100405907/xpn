@@ -30,7 +30,7 @@ public class testSparkHDFS {
 
 		long startTime = System.nanoTime();
 
-		JavaRDD<String> rdd = sc.textFile("hdfs:///wikipedia");
+		JavaRDD<String> rdd = sc.textFile("hdfs:///wikipedia", 36);
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
@@ -38,6 +38,7 @@ public class testSparkHDFS {
 
 		JavaPairRDD<String, Integer> counts = ones.reduceByKey((i1, i2) -> i1 + i2).sortByKey(true);
 
+		System.out.println(counts.count());
 		System.out.println(counts.take(10));
 		
         counts.saveAsTextFile("hdfs:///wc-wikipedia");
