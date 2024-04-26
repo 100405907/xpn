@@ -64,7 +64,7 @@ public class testSparkExpand {
 
 		long startTime = System.nanoTime();
 
-		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/quixote");
+		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/wikipedia");
 		System.out.println(rdd.count());
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
@@ -78,7 +78,7 @@ public class testSparkExpand {
 
 		System.out.println(counts.take(10));
 
-		ExpandSparkFunctions.writeExpand(counts, "xpn:///xpn/wc-quixote", xpnconf);
+		ExpandSparkFunctions.writeExpand(counts, "xpn:///xpn/wc-wikipedia", xpnconf);
 
     	System.out.println("---------------------------------- " + (System.nanoTime() - startTime) + " ---------------------------------");
 
