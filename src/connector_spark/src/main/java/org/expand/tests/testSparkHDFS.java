@@ -28,9 +28,11 @@ public class testSparkHDFS {
 		SparkSession spark = SparkSession.builder().appName("wc")
 			.getOrCreate();
 
+		int num_parts = Integer.parseInt(args[0]);
+
 		long startTime = System.nanoTime();
 
-		JavaRDD<String> rdd = sc.textFile("hdfs:///wikipedia", 36);
+		JavaRDD<String> rdd = sc.textFile("hdfs:///wikipedia", num_parts);
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
