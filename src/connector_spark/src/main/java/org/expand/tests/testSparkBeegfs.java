@@ -33,7 +33,7 @@ public class testSparkBeegfs {
 
 		long startTime = System.nanoTime();
 
-		JavaRDD<String> rdd = sc.textFile(path, num_parts);
+		JavaRDD<String> rdd = sc.textFile(path).repartition(num_parts);
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
