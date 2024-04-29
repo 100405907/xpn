@@ -62,11 +62,12 @@ public class testSparkExpand {
 		// 	System.out.println("Excepcion en la carga");
 		// }
 
-		int num_parts = Integer.parseInt(args[0]);
+		String path = args[0];
+		int num_parts = Integer.parseInt(args[1]);
 
 		long startTime = System.nanoTime();
 
-		JavaRDD<String> rdd = sc.textFile("xpn:///xpn/wikipedia", num_parts);
+		JavaRDD<String> rdd = sc.textFile(path, num_parts);
 		System.out.println(rdd.take(10));
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());

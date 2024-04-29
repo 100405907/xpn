@@ -28,11 +28,12 @@ public class testSparkBeegfs {
 		SparkSession spark = SparkSession.builder().appName("wc")
 			.getOrCreate();
 
-		int num_parts = Integer.parseInt(args[0]);
+		String path = args[0];
+		int num_parts = Integer.parseInt(args[1]);
 
 		long startTime = System.nanoTime();
 
-		JavaRDD<String> rdd = sc.textFile("/beegfs/home/javier.garciablas/gsotodos/data/wikipedia", num_parts);
+		JavaRDD<String> rdd = sc.textFile(path, num_parts);
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
