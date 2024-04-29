@@ -29,11 +29,10 @@ public class testSparkBeegfs {
 			.getOrCreate();
 
 		String path = args[0];
-		int num_parts = Integer.parseInt(args[1]);
 
 		long startTime = System.nanoTime();
 
-		JavaRDD<String> rdd = sc.textFile(path).repartition(num_parts);
+		JavaRDD<String> rdd = sc.textFile(path);
 
 		JavaRDD<String> words = rdd.flatMap(s -> Arrays.asList(s.split(" |\n")).iterator());
 
