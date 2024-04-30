@@ -33,7 +33,7 @@ public class ExpandFSInputStream extends ExpandInputStream
 
     @Override
     public synchronized int read(byte[] b, int off, int len) {
-        System.out.println("------------------- ENTRO A READ(b, off, len) --------------------");
+        System.out.println("------------------- ENTRO A READ(b, off, len" + len + ") --------------------");
         int ret = super.read(b, off, len);
         return ret;
     }
