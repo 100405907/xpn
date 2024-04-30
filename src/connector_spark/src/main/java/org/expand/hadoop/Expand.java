@@ -53,9 +53,9 @@ public class Expand extends FileSystem {
 	public void close() throws IOException {
 		System.out.println("------------------ENTRO A CLOSE------------------");
 
-		this.initialized = false;
-		this.xpn.jni_xpn_destroy();
-		super.close();
+		// this.initialized = false;
+		// this.xpn.jni_xpn_destroy();
+		// super.close();
 
 		System.out.println("------------------SALGO DE CLOSE------------------");
 	}

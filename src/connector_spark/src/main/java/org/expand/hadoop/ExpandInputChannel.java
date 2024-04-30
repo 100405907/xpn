@@ -26,11 +26,11 @@ public class ExpandInputChannel implements ReadableByteChannel {
 	public synchronized void close() {
 		if (fd < 0) return;
 		
-		// xpn.jni_xpn_close(fd);
-		// this.fd = -1;
-		// this.flags = null;
-		// this.buf.clear();
-		// this.buf = null;
+		xpn.jni_xpn_close(fd);
+		this.fd = -1;
+		this.flags = null;
+		this.buf.clear();
+		this.buf = null;
 	}
 
 	@Override
