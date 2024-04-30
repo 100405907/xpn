@@ -67,6 +67,7 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
     private var value: Array[Byte] = _
 
     override def nextKeyValue() : Boolean = {
+      println("-----------------------OFFSET: " + offset + "--------------------------")
       if (offset >= length) {
         return false
       }
@@ -79,7 +80,6 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
         }
         read += newRead
       }
-      println("Helloooooooooooooooooooooooooooooooooooooooooooo, world")
       if (key == null) {
         key = new Array[Byte](TeraInputFormat.KEY_LEN)
       }
