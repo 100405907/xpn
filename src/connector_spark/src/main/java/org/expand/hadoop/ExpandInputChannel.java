@@ -40,7 +40,6 @@ public class ExpandInputChannel implements ReadableByteChannel {
 
 	@Override
 	public synchronized int read (ByteBuffer dst) {
-		System.out.println("------------------ENTRO A READ (bytebuf)------------------");
 		if (fd < 0) return -1;
 
 		int iniDstRemaining = dst.remaining();

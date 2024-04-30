@@ -40,7 +40,7 @@ public class ExpandFSInputStream extends ExpandInputStream
 
     @Override
     public int read(long position, byte[] buffer, int offset, int length) {
-        System.out.println("------------------- ENTRO A READ(pos, b, off, len) --------------------");
+        System.out.println("------------------- ENTRO A READ(pos, b, off, len: " + length + ") --------------------");
         long oldPos = getPos();
         seek(position);
         int ret = read(buffer, offset, length);
