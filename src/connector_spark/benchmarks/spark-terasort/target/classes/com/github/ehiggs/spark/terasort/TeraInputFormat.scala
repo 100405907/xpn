@@ -79,6 +79,7 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
         }
         read += newRead
       }
+      println("Helloooooooooooooooooooooooooooooooooooooooooooo, world")
       if (key == null) {
         key = new Array[Byte](TeraInputFormat.KEY_LEN)
       }
