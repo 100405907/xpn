@@ -25,7 +25,6 @@ public class ExpandInputStream extends InputStream implements Closeable {
 		if (fileSize < 0 || xpn.jni_xpn_lseek(fd, 0, flags.SEEK_SET) < 0) {
 			System.out.println("WRONG FILE SIZE " + path);
 		}
-		System.out.println("FD: " + this.fd + " FS: " + this.fileSize);
 		this.in = new ExpandInputChannel(fd, bufsize);
 	}
 
