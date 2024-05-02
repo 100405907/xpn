@@ -21,6 +21,7 @@ import java.util.Comparator
 import com.google.common.primitives.UnsignedBytes
 import org.apache.spark.{SparkConf, SparkContext}
 import org.expand.spark.ExpandSparkFunctions
+import org.apache.spark.expand.ExpandRDDFunctions
 
 /**
  * This is a great example program to stress test Spark's shuffle mechanism.
@@ -64,6 +65,7 @@ object TeraSortXPN {
       new TeraSortPartitioner(dataset.partitions.length))
     // sorted.saveAsNewAPIHadoopFile[TeraOutputFormat](outputFile)
     ExpandSparkFunctions.writeExpand(sorted, outputFile, sc.hadoopConfiguration);
+    // sorted.saveAsNewAPIHadoopFile[TeraOutputFormat](outputFile)
     val endTime = System.currentTimeMillis()
     println(s"==== TeraSort took ${(endTime-startTime)/1000.0}s ====")
     sc.stop()
