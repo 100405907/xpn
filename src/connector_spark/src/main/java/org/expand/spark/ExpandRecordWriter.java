@@ -14,13 +14,14 @@ public class ExpandRecordWriter<K, V> implements RecordWriter<K, V>, Serializabl
     private FSDataOutputStream out;
 
     public ExpandRecordWriter(Configuration conf, Path outputPath) throws IOException {
-        System.out.println("--------------------LLEGO A EXPAND RECORD WRITER--------------------");
+        // System.out.println("--------------------LLEGO A EXPAND RECORD WRITER--------------------");
         this.out = outputPath.getFileSystem(conf).append(outputPath);
     }
 
     @Override
     public void write(K key, V value) throws IOException {
-        String towr = "{key: " + key.toString() + ", value: " + value.toString() + "}\n";
+        // String towr = "{key: " + key.toString() + ", value: " + value.toString() + "}\n";
+        String towr = key.toString() + value.toString();
         out.write(towr.getBytes());
     }
 

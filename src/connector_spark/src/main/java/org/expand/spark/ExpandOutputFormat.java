@@ -19,7 +19,7 @@ public class ExpandOutputFormat<K, V> extends FileOutputFormat<K, V> {
     @Override
     public RecordWriter<K, V> getRecordWriter(FileSystem ignored, JobConf job, String name, Progressable progress) throws IOException {
         Path out = new Path(job.get(OUTPUT_PATH_KEY));
-        System.out.println("--------------------LLEGO A EXPAND OUTPUT FORMAT--------------------");
+        // System.out.println("--------------------LLEGO A EXPAND OUTPUT FORMAT--------------------");
         return new ExpandRecordWriter(job, out);
     }
 

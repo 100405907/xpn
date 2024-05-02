@@ -281,12 +281,12 @@ public class Expand extends FileSystem {
 	}
 
 	public boolean exists (Path path){
-		System.out.println("------------------ENTRO A EXISTS------------------");
+		// System.out.println("------------------ENTRO A EXISTS------------------");
 
-		System.out.println(path.toString());
+		// System.out.println(path.toString());
 		if (this.xpn.jni_xpn_exist(path.toString()) != 0) return false;
 
-		System.out.println("------------------SALGO DE EXISTS------------------");
+		// System.out.println("------------------SALGO DE EXISTS------------------");
 		return true;
 	}
 
