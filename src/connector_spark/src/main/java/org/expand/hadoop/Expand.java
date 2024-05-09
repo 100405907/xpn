@@ -293,6 +293,11 @@ public class Expand extends FileSystem {
 	public boolean exists (Path path){
 		// System.out.println("------------------ENTRO A EXISTS------------------");
 
+		String str = path.toString();
+		if (str.startsWith("/xpn")){
+			path = new Path(str.substring(4));
+		}
+
 		// System.out.println(path.toString());
 		if (this.xpn.jni_xpn_exist(path.toString()) != 0) return false;
 
