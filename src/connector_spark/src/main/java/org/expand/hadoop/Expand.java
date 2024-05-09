@@ -84,7 +84,7 @@ public class Expand extends FileSystem {
 		System.out.println("---------------------ENTRO A GETFILESTATUS-----------------");
 
 		path = removeURI(path);
-		path = appendPartition(path);
+		// path = appendPartition(path);
 		System.out.println("PATH QUE ENTRA: " + path.toString());
 
 		if (!exists(path)) return null;
@@ -141,7 +141,7 @@ public class Expand extends FileSystem {
 	public FileStatus[] listStatus(Path f){
 		System.out.println("----------------------ENTRO A LISTSTATUS---------------------");
 		f = removeURI(f);
-		f = appendPartition(f);
+		// f = appendPartition(f);
 
 		if (!exists(f))
 			return null;
@@ -169,7 +169,7 @@ public class Expand extends FileSystem {
 
 		System.out.println("------------------ENTRO A DELETE------------------");
 		path = removeURI(path);
-		path = appendPartition(path);
+		// path = appendPartition(path);
 		
 		if (!exists(path)) return false;
 		if (!isDir(path)) return this.xpn.jni_xpn_unlink(path.toString()) == 0;
@@ -195,9 +195,9 @@ public class Expand extends FileSystem {
 		// System.out.println("------------------ENTRO A RENAME------------------");
 
 		src = removeURI(src);
-		src = appendPartition(src);
+		// src = appendPartition(src);
 		dst = removeURI(dst);
-		dst = appendPartition(dst);
+		// dst = appendPartition(dst);
 
 		if (!exists(src)) return false;
 		if (exists(dst)) return false;
@@ -213,7 +213,7 @@ public class Expand extends FileSystem {
 		// System.out.println("------------------ENTRO A APPEND------------------");
 
 		f = removeURI(f);
-		f = appendPartition(f);
+		// f = appendPartition(f);
 		if (!exists(f)) xpn.jni_xpn_creat(f.toString(), flags.S_IRWXU | flags.S_IRWXG | flags.S_IRWXO);
 
 		// System.out.println("------------------SALGO DE APPEND------------------");
@@ -230,7 +230,7 @@ public class Expand extends FileSystem {
 		// System.out.println("------------------ENTRO A CREATE------------------");
 
 		f = removeURI(f);
-		f = appendPartition(f);
+		// f = appendPartition(f);
 		Path parent = f.getParent();
 
 		if (exists(f)) {
@@ -256,7 +256,7 @@ public class Expand extends FileSystem {
 		// System.out.println("------------------ENTRO A OPEN------------------");
 
 		f = removeURI(f);
-		f = appendPartition(f);
+		// f = appendPartition(f);
 
 		// System.out.println("------------------SALGO DE OPEN------------------");
 		return new FSDataInputStream(new ExpandFSInputStream(f.toString(), bufsize, statistics));
