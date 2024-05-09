@@ -23,6 +23,10 @@ import org.apache.spark.{SparkConf, SparkContext}
 import org.expand.spark.ExpandSparkFunctions
 import org.apache.spark.expand.ExpandRDDFunctions
 
+import java.net.URI
+import org.apache.hadoop.fs.FileSystem
+import org.expand.hadoop.Expand
+
 /**
  * This is a great example program to stress test Spark's shuffle mechanism.
  *
@@ -56,6 +60,8 @@ object TeraSortXPN {
 
     val conf = new SparkConf()
       .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+      .set("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand")
+      .set("spark.hadoop.fs.default.name", "xpn:///")
       .setAppName(s"TeraSort")
     val sc = new SparkContext(conf)
 
