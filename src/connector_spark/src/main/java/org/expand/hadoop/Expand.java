@@ -113,6 +113,7 @@ public class Expand extends FileSystem {
 		String [] dirs = path.toString().split("/");
 
 		for (int i = 1; i < dirs.length; i++){
+			if (dirs[i].equals("xpn")) continue;
 			relPath += "/" + dirs[i];
 			absPath = makeAbsolute(new Path (relPath)).toString();
 			if (exists(new Path(absPath))) continue;
