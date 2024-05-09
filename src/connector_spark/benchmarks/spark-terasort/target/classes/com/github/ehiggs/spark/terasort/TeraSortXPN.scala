@@ -22,9 +22,6 @@ import com.google.common.primitives.UnsignedBytes
 import org.apache.spark.{SparkConf, SparkContext}
 import org.expand.spark.ExpandSparkFunctions
 import org.apache.spark.expand.ExpandRDDFunctions
-import org.expand.hadoop.Expand
-import org.apache.hadoop.fs.Path
-import java.net.URI
 
 /**
  * This is a great example program to stress test Spark's shuffle mechanism.
@@ -61,17 +58,6 @@ object TeraSortXPN {
       .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       .setAppName(s"TeraSort")
     val sc = new SparkContext(conf)
-
-    val xpn = new Expand()
-    val xpnconf = sc.hadoopConfiguration
-    val xpnuri = URI.create("xpn:///")
-
-    try {
-      xpn.initialize(xpnuri, xpnconf)
-    } catch {
-      case e: Throwable => println("Excepción en initialize de expand: " + e.getMessage)
-    }
-
 
     val dataset = sc.newAPIHadoopFile[Array[Byte], Array[Byte], TeraInputFormat](inputFile)
     val startTime = System.currentTimeMillis()
