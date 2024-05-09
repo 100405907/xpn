@@ -108,12 +108,12 @@ public class Expand extends FileSystem {
 
 		path = removeURI(path);
 		path = appendPartition(path);
-		String relPath = "";
+		String relPath = "/xpn";
 		String absPath;
 		String [] dirs = path.toString().split("/");
 
 		for (int i = 1; i < dirs.length; i++){
-			// if (dirs[i].equals("xpn") && i == 1) continue;
+			if (dirs[i].equals("xpn") && i == 1) continue;
 			relPath += "/" + dirs[i];
 			absPath = makeAbsolute(new Path (relPath)).toString();
 			if (exists(new Path(absPath))) continue;
