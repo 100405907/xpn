@@ -7,9 +7,6 @@ import java.net.URISyntaxException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.DelegateToFileSystem;
 
-/**
- * The OrangeFs implementation of AbstractFileSystem.
- */
 public class ExpandAFS extends DelegateToFileSystem {
     ExpandAFS(final URI theUri, final Configuration conf)
             throws IOException, URISyntaxException {
