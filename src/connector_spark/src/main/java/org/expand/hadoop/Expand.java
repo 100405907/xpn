@@ -98,7 +98,7 @@ public class Expand extends FileSystem {
 		String groupname = this.xpn.jni_xpn_getGroupname((int) stats.st_gid);
 		FsPermission permission = new FsPermission(Integer.toOctalString(stats.st_mode & 0777));
 
-		System.out.println("-------------------SALGO DE GETFILESTATUS--------------------------");
+		System.out.println("-------------------SALGO DE GETFILESTATUS-------------------------- " + stats.st_mtime * 1000);
 
 		return new FileStatus(stats.st_size, isdir, 0, stats.st_blksize,
 					stats.st_mtime * 1000, stats.st_atime * 1000, 
