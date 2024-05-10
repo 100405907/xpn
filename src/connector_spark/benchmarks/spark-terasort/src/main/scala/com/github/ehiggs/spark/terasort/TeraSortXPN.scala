@@ -56,6 +56,9 @@ object TeraSortXPN {
 
     val conf = new SparkConf()
       .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+      .set("spark.hadoop.fs.defaultFS", "xpn:///")
+      .set("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand")
+      .set("spark.hadoop.fs.AbstractFileSystem.xpn.impl", "org.expand.hadoop.ExpandAFS")
       .setAppName(s"TeraSort")
     val sc = new SparkContext(conf)
 

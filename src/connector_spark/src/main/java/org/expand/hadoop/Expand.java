@@ -115,9 +115,9 @@ public class Expand extends FileSystem {
 		for (int i = 1; i < dirs.length; i++){
 			if (dirs[i].equals("xpn") && i == 1) continue;
 			relPath += "/" + dirs[i];
-			absPath = makeAbsolute(new Path (relPath)).toString();
+			// absPath = makeAbsolute(new Path (relPath)).toString();
 			if (exists(new Path(absPath))) continue;
-			int res = this.xpn.jni_xpn_mkdir(absPath , permission.toShort());
+			int res = this.xpn.jni_xpn_mkdir(new Path (relPath) , permission.toShort());
 			if (res != 0) return false;
 		}
 
