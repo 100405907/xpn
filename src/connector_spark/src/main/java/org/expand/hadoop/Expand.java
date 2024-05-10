@@ -318,4 +318,9 @@ public class Expand extends FileSystem {
 			return newPath;
 		}
 	}
+
+	@Override
+    public String getScheme() {
+        return "xpn";
+    }
 }
