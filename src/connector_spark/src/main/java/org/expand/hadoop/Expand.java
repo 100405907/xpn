@@ -87,7 +87,10 @@ public class Expand extends FileSystem {
 		path = appendPartition(path);
 		System.out.println("PATH QUE ENTRA: " + path.toString());
 
-		if (!exists(path)) return null;
+		if (!exists(path)) {
+			System.out.println("GETFILESTATUS " + path.toString() + " NO EXISTE!!!!!!!!!!!!!!!!");
+			return null;
+		};
 
 		Stat stats = this.xpn.jni_xpn_stat(path.toString());
 		boolean isdir = this.xpn.jni_xpn_isDir(stats.st_mode) != 0;
@@ -116,8 +119,8 @@ public class Expand extends FileSystem {
 			if (dirs[i].equals("xpn") && i == 1) continue;
 			relPath += "/" + dirs[i];
 			// absPath = makeAbsolute(new Path (relPath)).toString();
-			if (exists(new Path(absPath))) continue;
-			int res = this.xpn.jni_xpn_mkdir(new Path (relPath) , permission.toShort());
+			if (exists(new Path(relPath))) continue;
+			int res = this.xpn.jni_xpn_mkdir(relPath , permission.toShort());
 			if (res != 0) return false;
 		}
 
