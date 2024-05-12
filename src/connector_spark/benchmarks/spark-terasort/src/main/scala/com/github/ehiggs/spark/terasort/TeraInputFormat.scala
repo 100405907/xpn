@@ -67,6 +67,7 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
     val listing: util.List[FileStatus] = new util.ArrayList[FileStatus]()
 
     for (p <- dirs) {
+      println(p.toString())
       val res = xpn.listStatus(p)
       for (r <- res){
         listing.add(r)
