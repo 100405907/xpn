@@ -21,6 +21,8 @@ import scala.collection.JavaConversions._
 
 import java.io.EOFException
 import java.util.Comparator
+import java.util
+import scala.collection.mutable.ListBuffer
 
 import com.google.common.primitives.UnsignedBytes
 import org.apache.hadoop.fs.FSDataInputStream
@@ -33,6 +35,7 @@ import org.apache.hadoop.mapreduce.RecordReader
 import org.apache.hadoop.mapreduce.TaskAttemptContext
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat
 import org.apache.hadoop.mapreduce.lib.input.FileSplit
+import org.apache.hadoop.mapred.JobConf
 
 object TeraInputFormat {
    val KEY_LEN = 10
@@ -51,7 +54,19 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
 
   // Sort the file pieces since order matters.
   override def listStatus(job: JobContext): java.util.List[FileStatus] = {
-    val listing = super.listStatus(job)
+    // val listing = super.listStatus(job)
+
+    val dirs: Array[Path] = FileInputFormat.getInputPaths(job)
+    val listing: util.List[FileStatus] = new util.ArrayList[FileStatus]()
+
+    for (p <- dirs) {
+      val fs = FileSystem.get(job.getConfiguration)
+      val res = fs.listStatus(p)
+      for (r <- res){
+        listing.add(r)
+      }
+    }
+
     val sortedListing= listing.sortWith{ (lhs, rhs) => { 
       lhs.getPath.compareTo(rhs.getPath) < 0
     } }
