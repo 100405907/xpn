@@ -58,6 +58,7 @@ object TeraSortXPN {
       .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       .setAppName(s"TeraSort")
     val sc = new SparkContext(conf)
+    sc.setLocalProperty("spark.scheduler.pool", "pool1")
 
     val dataset = sc.newAPIHadoopFile[Array[Byte], Array[Byte], TeraInputFormat](inputFile)
     val startTime = System.currentTimeMillis()

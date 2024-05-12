@@ -36,7 +36,7 @@ public class Expand extends FileSystem {
 	}
 
 	public void initialize(URI uri, Configuration conf) throws IOException {
-		System.out.println("------------------ENTRO A INITIALIZE------------------");
+		// System.out.println("------------------ENTRO A INITIALIZE------------------");
 
 		try{
 			super.initialize(getUri(), conf);
@@ -47,17 +47,17 @@ public class Expand extends FileSystem {
 		return;
 		}
 
-		System.out.println("------------------SALGO DE INITIALIZE------------------");
+		// System.out.println("------------------SALGO DE INITIALIZE------------------");
 	}
 
 	public void close() throws IOException {
-		System.out.println("------------------ENTRO A CLOSE------------------");
+		// System.out.println("------------------ENTRO A CLOSE------------------");
 
 		// this.initialized = false;
 		// this.xpn.jni_xpn_destroy();
 		// super.close();
 
-		System.out.println("------------------SALGO DE CLOSE------------------");
+		// System.out.println("------------------SALGO DE CLOSE------------------");
 	}
 
 	public void loadFileToExpand(Configuration conf, Path src, Path dst) throws IOException {
@@ -98,7 +98,7 @@ public class Expand extends FileSystem {
 		String groupname = this.xpn.jni_xpn_getGroupname((int) stats.st_gid);
 		FsPermission permission = new FsPermission(Integer.toOctalString(stats.st_mode & 0777));
 
-		System.out.println("-------------------SALGO DE GETFILESTATUS-------------------------- " + stats.st_mtime * 1000 + " !!!!!");
+		System.out.println("-------------------SALGO DE GETFILESTATUS--------------------------");
 
 		return new FileStatus(stats.st_size, isdir, 0, stats.st_blksize,
 					stats.st_mtime * 1000, stats.st_atime * 1000, 
@@ -170,7 +170,7 @@ public class Expand extends FileSystem {
 	@Override
 	public boolean delete(Path path, boolean recursive){
 
-		System.out.println("------------------ENTRO A DELETE------------------");
+		// System.out.println("------------------ENTRO A DELETE------------------");
 		path = removeURI(path);
 		path = appendPartition(path);
 		
@@ -188,14 +188,14 @@ public class Expand extends FileSystem {
 			if (!res) return false;
 		}
 
-		System.out.println("------------------SALGO DE DELETE------------------");
+		// System.out.println("------------------SALGO DE DELETE------------------");
 
 		return this.xpn.jni_xpn_rmdir(path.toString()) == 0;
 	}
 
 	@Override
 	public boolean rename(Path src, Path dst){
-		System.out.println("------------------ENTRO A RENAME------------------");
+		// System.out.println("------------------ENTRO A RENAME------------------");
 
 		src = removeURI(src);
 		src = appendPartition(src);
@@ -207,19 +207,19 @@ public class Expand extends FileSystem {
 
 		int res = xpn.jni_xpn_rename(src.toString(), dst.toString());
 
-		System.out.println("------------------SALGO DE RENAME------------------");
+		// System.out.println("------------------SALGO DE RENAME------------------");
 		return res == 0;
 	}
 
 	@Override
 	public FSDataOutputStream append(Path f, int bufferSize, Progressable progress){
-		System.out.println("------------------ENTRO A APPEND------------------");
+		// System.out.println("------------------ENTRO A APPEND------------------");
 
 		f = removeURI(f);
 		f = appendPartition(f);
 		if (!exists(f)) xpn.jni_xpn_creat(f.toString(), flags.S_IRWXU | flags.S_IRWXG | flags.S_IRWXO);
 
-		System.out.println("------------------SALGO DE APPEND------------------");
+		// System.out.println("------------------SALGO DE APPEND------------------");
 		return new FSDataOutputStream(new ExpandOutputStream(f.toString(), bufsize, (short) 0, blksize, true), statistics);
 	}
 
@@ -230,7 +230,7 @@ public class Expand extends FileSystem {
 
 	@Override
 	public FSDataOutputStream create(Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress) throws IOException {
-		System.out.println("------------------ENTRO A CREATE------------------");
+		// System.out.println("------------------ENTRO A CREATE------------------");
 
 		f = removeURI(f);
 		f = appendPartition(f);
@@ -243,7 +243,7 @@ public class Expand extends FileSystem {
 			if (!exists(parent)) mkdirs(parent, FsPermission.getFileDefault());
 		}
 
-		System.out.println("------------------SALGO DE CREATE------------------");
+		// System.out.println("------------------SALGO DE CREATE------------------");
 
 		return new FSDataOutputStream(new ExpandOutputStream(f.toString(), bufsize, replication, 
 					blksize, false), statistics);
@@ -256,12 +256,12 @@ public class Expand extends FileSystem {
 
 	@Override
 	public FSDataInputStream open(Path f, int bufferSize){
-		System.out.println("------------------ENTRO A OPEN------------------");
+		// System.out.println("------------------ENTRO A OPEN------------------");
 
 		f = removeURI(f);
 		f = appendPartition(f);
 
-		System.out.println("------------------SALGO DE OPEN------------------");
+		// System.out.println("------------------SALGO DE OPEN------------------");
 		return new FSDataInputStream(new ExpandFSInputStream(f.toString(), bufsize, statistics));
 	}
 
@@ -276,30 +276,30 @@ public class Expand extends FileSystem {
 	}
 
 	private Path makeAbsolute (Path path) {
-		System.out.println("------------------ENTRO A MKABSOLUTE------------------");
+		// System.out.println("------------------ENTRO A MKABSOLUTE------------------");
 
 		String fullPath = this.workingDirectory.toString() + path.toString();
 
-		System.out.println("------------------SALGO DE MKABSOLUTE------------------");
+		// System.out.println("------------------SALGO DE MKABSOLUTE------------------");
 		return new Path (fullPath);
 	}
 	
 	public boolean isDir (Path path) {
-		System.out.println("-------------------ENTRO A ISDIR----------------------");
+		// System.out.println("-------------------ENTRO A ISDIR----------------------");
 
 		Stat stats = this.xpn.jni_xpn_stat(path.toString());
 
-		System.out.println("----------------SALGO DE ISDIR---------------");
+		// System.out.println("----------------SALGO DE ISDIR---------------");
 		return this.xpn.jni_xpn_isDir(stats.st_mode) != 0;
 	}
 
 	public boolean exists (Path path){
-		System.out.println("------------------ENTRO A EXISTS------------------");
+		// System.out.println("------------------ENTRO A EXISTS------------------");
 
 		// System.out.println(path.toString());
 		if (this.xpn.jni_xpn_exist(path.toString()) != 0) return false;
 
-		System.out.println("------------------SALGO DE EXISTS------------------");
+		// System.out.println("------------------SALGO DE EXISTS------------------");
 		return true;
 	}
 
@@ -318,9 +318,4 @@ public class Expand extends FileSystem {
 			return newPath;
 		}
 	}
-
-	@Override
-    public String getScheme() {
-        return "xpn";
-    }
 }
