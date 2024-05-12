@@ -55,30 +55,30 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
   : RecordReader[Array[Byte], Array[Byte]] = new TeraRecordReader()
 
   // Sort the file pieces since order matters.
-  override def listStatus(job: JobContext): java.util.List[FileStatus] = {
-    // val listing = super.listStatus(job)
+  // override def listStatus(job: JobContext): java.util.List[FileStatus] = {
+  //   // val listing = super.listStatus(job)
 
-    val xpn: Expand = new Expand()
-    try{
-      xpn.initialize(URI.create("xpn:///"), job.getConfiguration())
-    }
+  //   val xpn: Expand = new Expand()
+  //   try{
+  //     xpn.initialize(URI.create("xpn:///"), job.getConfiguration())
+  //   }
 
-    val dirs: Array[Path] = FileInputFormat.getInputPaths(job)
-    val listing: util.List[FileStatus] = new util.ArrayList[FileStatus]()
+  //   val dirs: Array[Path] = FileInputFormat.getInputPaths(job)
+  //   val listing: util.List[FileStatus] = new util.ArrayList[FileStatus]()
 
-    for (p <- dirs) {
-      println(p.toString())
-      val res = xpn.listStatus(p)
-      for (r <- res){
-        listing.add(r)
-      }
-    }
+  //   for (p <- dirs) {
+  //     println(p.toString())
+  //     val res = xpn.listStatus(p)
+  //     for (r <- res){
+  //       listing.add(r)
+  //     }
+  //   }
 
-    val sortedListing= listing.sortWith{ (lhs, rhs) => { 
-      lhs.getPath.compareTo(rhs.getPath) < 0
-    } }
-    sortedListing.toList
-  }
+  //   val sortedListing= listing.sortWith{ (lhs, rhs) => { 
+  //     lhs.getPath.compareTo(rhs.getPath) < 0
+  //   } }
+  //   sortedListing.toList
+  // }
 
   class TeraRecordReader extends RecordReader[Array[Byte], Array[Byte]] {
     private var in : FSDataInputStream = _
