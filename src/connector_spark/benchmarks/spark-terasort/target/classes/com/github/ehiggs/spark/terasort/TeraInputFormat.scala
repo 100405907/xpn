@@ -22,6 +22,7 @@ import scala.collection.JavaConversions._
 import java.io.EOFException
 import java.util.Comparator
 import java.util
+import java.net.URI
 import scala.collection.mutable.ListBuffer
 
 import com.google.common.primitives.UnsignedBytes
@@ -36,6 +37,7 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat
 import org.apache.hadoop.mapreduce.lib.input.FileSplit
 import org.apache.hadoop.mapred.JobConf
+import org.expand.hadoop.Expand
 
 object TeraInputFormat {
    val KEY_LEN = 10
@@ -56,12 +58,16 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
   override def listStatus(job: JobContext): java.util.List[FileStatus] = {
     // val listing = super.listStatus(job)
 
+    val xpn: Expand = new Expand()
+    try{
+      xpn.initialize(URI.create("xpn:///"), job.getConfiguration())
+    }
+
     val dirs: Array[Path] = FileInputFormat.getInputPaths(job)
     val listing: util.List[FileStatus] = new util.ArrayList[FileStatus]()
 
     for (p <- dirs) {
-      val fs = FileSystem.get(job.getConfiguration)
-      val res = fs.listStatus(p)
+      val res = xpn.listStatus(p)
       for (r <- res){
         listing.add(r)
       }
