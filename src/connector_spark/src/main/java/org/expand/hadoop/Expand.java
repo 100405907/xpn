@@ -304,7 +304,7 @@ public class Expand extends FileSystem {
 			return this.xpn.jni_xpn_isDir(stats.st_mode) != 0;
 		} catch (Exception e) {
 			System.out.println("Excepcion con path: " + path.toString());
-			return true;
+			return false;
 		}
 	}
 
