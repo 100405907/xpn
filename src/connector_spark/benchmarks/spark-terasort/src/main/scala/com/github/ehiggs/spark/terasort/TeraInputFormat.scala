@@ -28,10 +28,12 @@ import scala.collection.mutable.ListBuffer
 import com.google.common.primitives.UnsignedBytes
 import org.apache.hadoop.fs.FSDataInputStream
 import org.apache.hadoop.fs.FileSystem
+import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.FileStatus
 import org.apache.hadoop.fs.Path
 import org.apache.hadoop.mapreduce.InputSplit
 import org.apache.hadoop.mapreduce.JobContext
+import org.apache.hadoop.mapred.JobContextImpl
 import org.apache.hadoop.mapreduce.RecordReader
 import org.apache.hadoop.mapreduce.TaskAttemptContext
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat
@@ -56,7 +58,19 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
 
   // Sort the file pieces since order matters.
   override def listStatus(job: JobContext): java.util.List[FileStatus] = {
-    val listing = super.listStatus(job)
+
+    val conf: Configuration = job.getConfiguration()
+    conf.set("spark.hadoop.fs.defaultFS", "xpn:///")
+
+    val jobConf: JobConf = new JobConf(conf)
+
+    val new_job: JobContext = new JobContextImpl(jobConf, job.getJobID())
+
+
+
+    
+
+    val listing = super.listStatus(new_job)
 
     // val xpn: Expand = new Expand()
     // try{
