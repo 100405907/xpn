@@ -81,14 +81,14 @@ public class Expand extends FileSystem {
 
 	@Override
 	public FileStatus getFileStatus (Path path){
-		System.out.println("---------------------ENTRO A GETFILESTATUS-----------------");
+		// System.out.println("---------------------ENTRO A GETFILESTATUS-----------------");
 
 		path = removeURI(path);
 		path = appendPartition(path);
 		System.out.println("PATH QUE ENTRA: " + path.toString());
 
 		if (!exists(path)) {
-			System.out.println("GETFILESTATUS " + path.toString() + " NO EXISTE!!!!!!!!!!!!!!!!");
+			// System.out.println("GETFILESTATUS " + path.toString() + " NO EXISTE!!!!!!!!!!!!!!!!");
 			return null;
 		};
 
@@ -98,7 +98,7 @@ public class Expand extends FileSystem {
 		String groupname = this.xpn.jni_xpn_getGroupname((int) stats.st_gid);
 		FsPermission permission = new FsPermission(Integer.toOctalString(stats.st_mode & 0777));
 
-		System.out.println("-------------------SALGO DE GETFILESTATUS--------------------------");
+		// System.out.println("-------------------SALGO DE GETFILESTATUS--------------------------");
 
 		return new FileStatus(stats.st_size, isdir, 0, stats.st_blksize,
 					stats.st_mtime * 1000, stats.st_atime * 1000, 
@@ -107,7 +107,7 @@ public class Expand extends FileSystem {
 
 	@Override
 	public boolean mkdirs(Path path, FsPermission permission) throws IOException {
-		System.out.println("------------------ENTRO A MKDIRS------------------");
+		// System.out.println("------------------ENTRO A MKDIRS------------------");
 
 		path = removeURI(path);
 		path = appendPartition(path);
@@ -124,7 +124,7 @@ public class Expand extends FileSystem {
 			if (res != 0) return false;
 		}
 
-		System.out.println("------------------SALGO DE MKDIRS------------------");
+		// System.out.println("------------------SALGO DE MKDIRS------------------");
 
 		return true;
 	}
@@ -141,14 +141,13 @@ public class Expand extends FileSystem {
 	}
 
 	@Override
-	public FileStatus[] listStatus(Path f) throws IOException {
-		// throw new IOException("Este es un mensaje opcional que puedes proporcionar");
-		System.out.println("----------------------ENTRO A LISTSTATUS---------------------");
+	public FileStatus[] listStatus(Path f) {
+		// System.out.println("----------------------ENTRO A LISTSTATUS---------------------");
 		f = removeURI(f);
 		f = appendPartition(f);
 
 		if (!exists(f))
-			throw new IOException("Este es un mensaje opcional que puedes proporcionar " + f.toString());
+			return null;
 
 		if (!isDirectory(f)){
 			FileStatus [] list = new FileStatus[1];
@@ -164,7 +163,7 @@ public class Expand extends FileSystem {
 			System.out.println(list[i].toString());
 		}
 
-		System.out.println("-------------------------SALGO DE LISTSTATUS------------------");
+		// System.out.println("-------------------------SALGO DE LISTSTATUS------------------");
 
 		return list;
 	}
@@ -258,12 +257,12 @@ public class Expand extends FileSystem {
 
 	@Override
 	public FSDataInputStream open(Path f, int bufferSize){
-		System.out.println("------------------ENTRO A OPEN------------------");
+		// System.out.println("------------------ENTRO A OPEN------------------");
 
 		f = removeURI(f);
 		f = appendPartition(f);
 
-		System.out.println("------------------SALGO DE OPEN------------------");
+		// System.out.println("------------------SALGO DE OPEN------------------");
 		return new FSDataInputStream(new ExpandFSInputStream(f.toString(), bufsize, statistics));
 	}
 
@@ -294,15 +293,15 @@ public class Expand extends FileSystem {
 	@Override
 	public boolean isDirectory (Path path) {
 		try {
-			System.out.println("-------------------ENTRO A ISDIR----------------------");
+			// System.out.println("-------------------ENTRO A ISDIR----------------------");
 
 			Stat stats = this.xpn.jni_xpn_stat(path.toString());
 
-			System.out.println("********************** " + path.toString() + " *********************************");
+			// System.out.println("********************** " + path.toString() + " *********************************");
 
-			System.out.println("********************** " + stats.st_mode + " *********************************");
+			// System.out.println("********************** " + stats.st_mode + " *********************************");
 
-			System.out.println("----------------SALGO DE ISDIR---------------");
+			// System.out.println("----------------SALGO DE ISDIR---------------");
 			return this.xpn.jni_xpn_isDir(stats.st_mode) != 0;
 		} catch (Exception e) {
 			System.out.println("Excepcion con path: " + path.toString());

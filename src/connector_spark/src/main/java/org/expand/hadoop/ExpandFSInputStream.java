@@ -21,9 +21,7 @@ public class ExpandFSInputStream extends ExpandInputStream
 
     @Override
     public synchronized int read() {
-        int readed = super.read();
-        System.out.println("+++++++++++++++++++++++++++++" + readed + "+++++++++++++++++++++++++++++++++");
-        return readed;
+        return super.read();
     }
 
     @Override
@@ -72,4 +70,3 @@ public class ExpandFSInputStream extends ExpandInputStream
         return false;
     }
 }
-
