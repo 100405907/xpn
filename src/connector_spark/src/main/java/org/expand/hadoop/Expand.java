@@ -291,7 +291,7 @@ public class Expand extends FileSystem {
 	
 	@Override
 	public boolean isDirectory (Path path) {
-		// System.out.println("-------------------ENTRO A ISDIR----------------------");
+		System.out.println("-------------------ENTRO A ISDIR----------------------");
 
 		Stat stats = this.xpn.jni_xpn_stat(path.toString());
 
@@ -299,7 +299,7 @@ public class Expand extends FileSystem {
 
       	System.out.println("********************** " + stats.st_mode + " *********************************");
 
-		// System.out.println("----------------SALGO DE ISDIR---------------");
+		System.out.println("----------------SALGO DE ISDIR---------------");
 		return this.xpn.jni_xpn_isDir(stats.st_mode) != 0;
 	}
 
