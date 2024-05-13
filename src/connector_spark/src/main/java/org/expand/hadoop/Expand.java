@@ -303,6 +303,7 @@ public class Expand extends FileSystem {
 			System.out.println("----------------SALGO DE ISDIR---------------");
 			return this.xpn.jni_xpn_isDir(stats.st_mode) != 0;
 		} catch (Exception e) {
+			System.out.println("Excepcion con path: " + path.toString());
 			return false;
 		}
 	}
