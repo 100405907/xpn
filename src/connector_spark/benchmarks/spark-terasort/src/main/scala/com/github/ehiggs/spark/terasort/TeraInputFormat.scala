@@ -59,8 +59,9 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
   // Sort the file pieces since order matters.
   override def listStatus(job: JobContext): java.util.List[FileStatus] = {
 
-    // val conf: Configuration = job.getConfiguration()
-    // conf.set("spark.hadoop.fs.defaultFS", "xpn:///")
+    val conf: Configuration = new Configuration()
+    conf.set("spark.hadoop.fs.defaultFS", "xpn:///")
+    conf.set("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand")
 
     // val jobConf: JobConf = new JobConf(conf)
 
@@ -70,7 +71,7 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
 
     val xpn: Expand = new Expand()
     try{
-      xpn.initialize(URI.create("xpn:///"), job.getConfiguration())
+      xpn.initialize(URI.create("xpn:///"), conf)
     }
 
     // val dirs: Array[Path] = FileInputFormat.getInputPaths(job)
@@ -126,7 +127,11 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
     override def initialize(split : InputSplit, context : TaskAttemptContext) : Unit = {
       val fileSplit = split.asInstanceOf[FileSplit]
       val p : Path = fileSplit.getPath
-      val fs : FileSystem = p.getFileSystem(context.getConfiguration)
+      val conf: Configuration = new Configuration()
+      conf.set("spark.hadoop.fs.defaultFS", "xpn:///")
+      conf.set("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand")
+
+      val fs : FileSystem = p.getFileSystem(conf)
       in = fs.open(p)
       val start : Long = fileSplit.getStart
       // find the offset to start at a record boundary
