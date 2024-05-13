@@ -75,7 +75,7 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
     }
 
     // val dirs: Array[Path] = FileInputFormat.getInputPaths(job)
-    val listing: Array[FileStatus] = xpn.listStatus(new Path("xpn:///"))
+    val listing: Array[FileStatus] = xpn.listStatus(new Path("xpn:///xpn/terasort_100"))
 
     // for (p <- dirs) {
     //   println(p.toString())
