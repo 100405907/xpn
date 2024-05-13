@@ -295,6 +295,9 @@ public class Expand extends FileSystem {
 
 		Stat stats = this.xpn.jni_xpn_stat(path.toString());
 
+
+      	System.out.println("********************** " + path.toString() + " " + stats.st_mode + " *********************************");
+
 		// System.out.println("----------------SALGO DE ISDIR---------------");
 		return this.xpn.jni_xpn_isDir(stats.st_mode) != 0;
 	}
