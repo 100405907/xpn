@@ -271,6 +271,11 @@ public class Expand extends FileSystem {
 	}
 
 	@Override
+	public void setPermission(Path path, FsPermission perm) throws IOException {
+
+	}
+
+	@Override
 	public URI getUri() {
 		return this.uri;
 	}
