@@ -291,16 +291,20 @@ public class Expand extends FileSystem {
 	
 	@Override
 	public boolean isDirectory (Path path) {
-		System.out.println("-------------------ENTRO A ISDIR----------------------");
+		try {
+			System.out.println("-------------------ENTRO A ISDIR----------------------");
 
-		Stat stats = this.xpn.jni_xpn_stat(path.toString());
+			Stat stats = this.xpn.jni_xpn_stat(path.toString());
 
-      	System.out.println("********************** " + path.toString() + " *********************************");
+			System.out.println("********************** " + path.toString() + " *********************************");
 
-      	System.out.println("********************** " + stats.st_mode + " *********************************");
+			System.out.println("********************** " + stats.st_mode + " *********************************");
 
-		System.out.println("----------------SALGO DE ISDIR---------------");
-		return this.xpn.jni_xpn_isDir(stats.st_mode) != 0;
+			System.out.println("----------------SALGO DE ISDIR---------------");
+			return this.xpn.jni_xpn_isDir(stats.st_mode) != 0;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	public boolean exists (Path path){
