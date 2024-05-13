@@ -606,10 +606,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<span class="extype" name="org.apache.hadoop.mapreduce.lib.input">input</span>] </dd><dt>Definition Classes</dt><dd>FileInputFormat</dd></dl></div>
-    </li><li name="org.apache.hadoop.mapreduce.lib.input.FileInputFormat#listStatus" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="listStatus(x$1:org.apache.hadoop.mapreduce.JobContext):java.util.List[org.apache.hadoop.fs.FileStatus]"></a><a id="listStatus(JobContext):List[FileStatus]"></a>
+    </li><li name="com.github.ehiggs.spark.terasort.TeraInputFormat#listStatus" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="listStatus(job:org.apache.hadoop.mapreduce.JobContext):java.util.List[org.apache.hadoop.fs.FileStatus]"></a><a id="listStatus(JobContext):List[FileStatus]"></a>
       <span class="permalink">
-      <a href="../../../../../com/github/ehiggs/spark/terasort/TeraInputFormat.html#listStatus(x$1:org.apache.hadoop.mapreduce.JobContext):java.util.List[org.apache.hadoop.fs.FileStatus]" title="Permalink">
+      <a href="../../../../../com/github/ehiggs/spark/terasort/TeraInputFormat.html#listStatus(job:org.apache.hadoop.mapreduce.JobContext):java.util.List[org.apache.hadoop.fs.FileStatus]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -618,16 +618,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">listStatus</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="org.apache.hadoop.mapreduce.JobContext">JobContext</span></span>)</span><span class="result">: <span class="extype" name="java.util.List">List</span>[<span class="extype" name="org.apache.hadoop.fs.FileStatus">FileStatus</span>]</span>
+        <span class="name">listStatus</span><span class="params">(<span name="job">job: <span class="extype" name="org.apache.hadoop.mapreduce.JobContext">JobContext</span></span>)</span><span class="result">: <span class="extype" name="java.util.List">List</span>[<span class="extype" name="org.apache.hadoop.fs.FileStatus">FileStatus</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<span class="extype" name="org.apache.hadoop.mapreduce.lib.input">input</span>] </dd><dt>Definition Classes</dt><dd>FileInputFormat</dd><dt>Annotations</dt><dd>
-                <span class="name">@throws</span><span class="args">(<span>
-      
-      <span class="symbol">classOf[java.io.IOException]</span>
-    </span>)</span>
-              
-        </dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="com.github.ehiggs.spark.terasort.TeraInputFormat">TeraInputFormat</a> → FileInputFormat</dd></dl></div>
     </li><li name="org.apache.hadoop.mapreduce.lib.input.FileInputFormat#makeSplit" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="makeSplit(x$1:org.apache.hadoop.fs.Path,x$2:Long,x$3:Long,x$4:Array[String],x$5:Array[String]):org.apache.hadoop.mapreduce.lib.input.FileSplit"></a><a id="makeSplit(Path,Long,Long,Array[String],Array[String]):FileSplit"></a>
       <span class="permalink">
