@@ -149,7 +149,7 @@ public class Expand extends FileSystem {
 		if (!exists(f))
 			return null;
 
-		if (!isDir(f)){
+		if (!isDirectory(f)){
 			FileStatus [] list = new FileStatus[1];
 			list[0] = getFileStatus(f);
 			return list;
@@ -175,7 +175,7 @@ public class Expand extends FileSystem {
 		path = appendPartition(path);
 		
 		if (!exists(path)) return false;
-		if (!isDir(path)) return this.xpn.jni_xpn_unlink(path.toString()) == 0;
+		if (!isDirectory(path)) return this.xpn.jni_xpn_unlink(path.toString()) == 0;
 		if (!recursive) return this.xpn.jni_xpn_rmdir(path.toString()) == 0;
 
 		String [] str = this.xpn.jni_xpn_getDirContent(path.toString());
@@ -284,7 +284,8 @@ public class Expand extends FileSystem {
 		return new Path (fullPath);
 	}
 	
-	public boolean isDir (Path path) {
+	@Override
+	public boolean isDirectory (Path path) {
 		// System.out.println("-------------------ENTRO A ISDIR----------------------");
 
 		Stat stats = this.xpn.jni_xpn_stat(path.toString());
