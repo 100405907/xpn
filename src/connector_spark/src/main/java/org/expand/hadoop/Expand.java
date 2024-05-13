@@ -256,12 +256,12 @@ public class Expand extends FileSystem {
 
 	@Override
 	public FSDataInputStream open(Path f, int bufferSize){
-		// System.out.println("------------------ENTRO A OPEN------------------");
+		System.out.println("------------------ENTRO A OPEN------------------");
 
 		f = removeURI(f);
 		f = appendPartition(f);
 
-		// System.out.println("------------------SALGO DE OPEN------------------");
+		System.out.println("------------------SALGO DE OPEN------------------");
 		return new FSDataInputStream(new ExpandFSInputStream(f.toString(), bufsize, statistics));
 	}
 
