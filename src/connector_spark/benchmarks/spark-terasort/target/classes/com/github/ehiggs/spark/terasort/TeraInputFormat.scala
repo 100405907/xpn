@@ -76,6 +76,9 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
 
     // val dirs: Array[Path] = FileInputFormat.getInputPaths(job)
     val listing: Array[FileStatus] = xpn.listStatus(new Path("xpn:///xpn/terasort_100"))
+    if (listing.length == 0) {
+      throw new NullPointerException("Este es un mensaje opcional que puedes proporcionar")
+    }
 
     // for (p <- dirs) {
     //   println(p.toString())
