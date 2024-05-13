@@ -141,31 +141,32 @@ public class Expand extends FileSystem {
 	}
 
 	@Override
-	public FileStatus[] listStatus(Path f){
-		System.out.println("----------------------ENTRO A LISTSTATUS---------------------");
-		f = removeURI(f);
-		f = appendPartition(f);
+	public FileStatus[] listStatus(Path f) throws IOException {
+		throw new IOException("Este es un mensaje opcional que puedes proporcionar");
+		// System.out.println("----------------------ENTRO A LISTSTATUS---------------------");
+		// f = removeURI(f);
+		// f = appendPartition(f);
 
-		if (!exists(f))
-			return null;
+		// if (!exists(f))
+		// 	return null;
 
-		if (!isDirectory(f)){
-			FileStatus [] list = new FileStatus[1];
-			list[0] = getFileStatus(f);
-			return list;
-		}
+		// if (!isDirectory(f)){
+		// 	FileStatus [] list = new FileStatus[1];
+		// 	list[0] = getFileStatus(f);
+		// 	return list;
+		// }
 
-		String str [] = this.xpn.jni_xpn_getDirContent(f.toString());
-		FileStatus list [] = new FileStatus [str.length];
-		for (int i = 0; i < list.length; i++){
-			if (str.equals(".") || str.equals("..")) continue;
-			list[i] = getFileStatus(new Path(f.toString() + "/" + str[i + 2]));
-			System.out.println(list[i].toString());
-		}
+		// String str [] = this.xpn.jni_xpn_getDirContent(f.toString());
+		// FileStatus list [] = new FileStatus [str.length];
+		// for (int i = 0; i < list.length; i++){
+		// 	if (str.equals(".") || str.equals("..")) continue;
+		// 	list[i] = getFileStatus(new Path(f.toString() + "/" + str[i + 2]));
+		// 	System.out.println(list[i].toString());
+		// }
 
-		System.out.println("-------------------------SALGO DE LISTSTATUS------------------");
+		// System.out.println("-------------------------SALGO DE LISTSTATUS------------------");
 
-		return list;
+		// return list;
 	}
 
 	@Override
