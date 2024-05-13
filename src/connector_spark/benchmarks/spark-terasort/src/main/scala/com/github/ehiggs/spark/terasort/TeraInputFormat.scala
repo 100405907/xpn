@@ -59,22 +59,18 @@ class TeraInputFormat extends FileInputFormat[Array[Byte], Array[Byte]] {
   // Sort the file pieces since order matters.
   override def listStatus(job: JobContext): java.util.List[FileStatus] = {
 
-    val conf: Configuration = job.getConfiguration()
-    conf.set("spark.hadoop.fs.defaultFS", "xpn:///")
+    // val conf: Configuration = job.getConfiguration()
+    // conf.set("spark.hadoop.fs.defaultFS", "xpn:///")
 
     // val jobConf: JobConf = new JobConf(conf)
 
     // val new_job: JobContext = new JobContextImpl(jobConf, job.getJobID())
 
-
-
-    
-
     // val listing = super.listStatus(new_job)
 
     val xpn: Expand = new Expand()
     try{
-      xpn.initialize(URI.create("xpn:///"), conf)
+      xpn.initialize(URI.create("xpn:///"), job.getConfiguration())
     }
 
     // val dirs: Array[Path] = FileInputFormat.getInputPaths(job)
