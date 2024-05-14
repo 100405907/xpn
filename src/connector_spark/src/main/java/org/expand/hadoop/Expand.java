@@ -156,11 +156,11 @@ public class Expand extends FileSystem {
 		}
 
 		String str [] = this.xpn.jni_xpn_getDirContent(f.toString());
-		FileStatus list [] = new FileStatus [str.length];
+		FileStatus list [] = new FileStatus [str.length + 1];
 		for (int i = 0; i < list.length; i++){
 			if (str.equals(".") || str.equals("..")) continue;
 			list[i] = getFileStatus(new Path(f.toString() + "/" + str[i + 2]));
-			System.out.println(list[i].toString());
+			// System.out.println(list[i].toString());
 		}
 
 		// System.out.println("-------------------------SALGO DE LISTSTATUS------------------");
