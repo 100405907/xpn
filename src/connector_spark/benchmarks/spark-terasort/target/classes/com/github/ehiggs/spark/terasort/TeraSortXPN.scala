@@ -65,7 +65,7 @@ object TeraSortXPN {
       .setAppName(s"TeraSort")
     val sc = new SparkContext(conf)
 
-    val dataset = sc.newAPIHadoopFile[Array[Byte], Array[Byte], TeraInputFormat](inputFile)
+    val dataset = sc.newAPIHadoopFile[Array[Byte], Array[Byte], TeraInputFormatXPN](inputFile)
     val startTime = System.currentTimeMillis()
     val sorted = dataset.repartitionAndSortWithinPartitions(
       new TeraSortPartitioner(dataset.partitions.length))
