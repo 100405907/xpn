@@ -54,15 +54,6 @@ object TeraSortXPN {
       System.exit(0)
     }
 
-    val xpn: Expand = new Expand()
-    val uri: URI = URI.create("xpn:///")
-    val xpnconf: Configuration = new Configuration()
-    xpnconf.set("spark.hadoop.fs.defaultFS", "xpn:///")
-    xpnconf.set("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand")
-    try{
-      xpn.initialize(uri, xpnconf)
-    }
-
     // Process command line arguments
     val inputFile = args(0)
     val outputFile = args(1)

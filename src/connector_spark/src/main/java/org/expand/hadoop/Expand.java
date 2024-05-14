@@ -36,7 +36,7 @@ public class Expand extends FileSystem {
 	}
 
 	public void initialize(URI uri, Configuration conf) throws IOException {
-		System.out.println("------------------ENTRO A INITIALIZE------------------");
+		// System.out.println("------------------ENTRO A INITIALIZE------------------");
 
 		try{
 			super.initialize(getUri(), conf);
@@ -47,7 +47,7 @@ public class Expand extends FileSystem {
 		return;
 		}
 
-		System.out.println("------------------SALGO DE INITIALIZE------------------");
+		// System.out.println("------------------SALGO DE INITIALIZE------------------");
 	}
 
 	public void close() throws IOException {
@@ -85,7 +85,7 @@ public class Expand extends FileSystem {
 
 		path = removeURI(path);
 		path = appendPartition(path);
-		System.out.println("PATH QUE ENTRA: " + path.toString());
+		// System.out.println("PATH QUE ENTRA: " + path.toString());
 
 		if (!exists(path)) {
 			// System.out.println("GETFILESTATUS " + path.toString() + " NO EXISTE!!!!!!!!!!!!!!!!");
@@ -156,7 +156,7 @@ public class Expand extends FileSystem {
 		}
 
 		String str [] = this.xpn.jni_xpn_getDirContent(f.toString());
-		FileStatus list [] = new FileStatus [str.length + 1];
+		FileStatus list [] = new FileStatus [300];
 		for (int i = 0; i < list.length; i++){
 			if (str.equals(".") || str.equals("..")) continue;
 			list[i] = getFileStatus(new Path(f.toString() + "/" + str[i + 2]));
