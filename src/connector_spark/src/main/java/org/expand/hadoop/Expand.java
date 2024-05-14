@@ -36,7 +36,7 @@ public class Expand extends FileSystem {
 	}
 
 	public void initialize(URI uri, Configuration conf) throws IOException {
-		// System.out.println("------------------ENTRO A INITIALIZE------------------");
+		System.out.println("------------------ENTRO A INITIALIZE------------------");
 
 		try{
 			super.initialize(getUri(), conf);
@@ -47,7 +47,7 @@ public class Expand extends FileSystem {
 		return;
 		}
 
-		// System.out.println("------------------SALGO DE INITIALIZE------------------");
+		System.out.println("------------------SALGO DE INITIALIZE------------------");
 	}
 
 	public void close() throws IOException {

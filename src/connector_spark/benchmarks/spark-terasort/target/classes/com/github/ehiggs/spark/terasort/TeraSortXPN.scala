@@ -23,6 +23,10 @@ import org.apache.spark.{SparkConf, SparkContext}
 import org.expand.spark.ExpandSparkFunctions
 import org.apache.spark.expand.ExpandRDDFunctions
 
+import java.net.URI;
+import org.apache.hadoop.conf.Configuration;
+import org.expand.hadoop.Expand
+
 /**
  * This is a great example program to stress test Spark's shuffle mechanism.
  *
@@ -48,6 +52,15 @@ object TeraSortXPN {
         "spark-terasort-1.0-SNAPSHOT-with-dependencies.jar " +
         "/home/myuser/terasort_in /home/myuser/terasort_out")
       System.exit(0)
+    }
+
+    val xpn: Expand = new Expand()
+    val uri: URI = URI.create("xpn:///")
+    val xpnconf: Configuration = new Configuration()
+    xpnconf.set("spark.hadoop.fs.defaultFS", "xpn:///")
+    xpnconf.set("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand")
+    try{
+      xpn.initialize(uri, xpnconf)
     }
 
     // Process command line arguments
