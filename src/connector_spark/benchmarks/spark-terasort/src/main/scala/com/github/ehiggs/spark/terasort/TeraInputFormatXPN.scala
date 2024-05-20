@@ -75,7 +75,7 @@ class TeraInputFormatXPN extends FileInputFormat[Array[Byte], Array[Byte]] {
     }
 
     // val dirs: Array[Path] = FileInputFormat.getInputPaths(job)
-    val listing: Array[FileStatus] = xpn.listStatus(new Path("xpn:///xpn/terasort_10"))
+    val listing: Array[FileStatus] = xpn.listStatus(new Path("xpn:///xpn/wikipedia"))
 
     // for (p <- dirs) {
     //   println(p.toString())
@@ -85,9 +85,21 @@ class TeraInputFormatXPN extends FileInputFormat[Array[Byte], Array[Byte]] {
     //   }
     // }
 
-    val sortedListing= listing.sortWith{ (lhs, rhs) => { 
-      lhs.getPath.compareTo(rhs.getPath) < 0
-    } }
+    val filterSortedListing = listing
+      .filter(_.getPath.toString.startsWith("/xpn/wikipedia/part-r"))
+      .sortWith { (lhs, rhs) =>
+        lhs.getPath.compareTo(rhs.getPath) < 0
+    }
+    val sortedListing = filterSortedListing.map { fileStatus =>
+      new FileStatus(
+        fileStatus.getLen,
+        fileStatus.isDirectory,
+        fileStatus.getReplication,
+        fileStatus.getBlockSize,
+        fileStatus.getModificationTime,
+        new Path("xpn:///" + fileStatus.getPath.toString)
+      )
+    }
     sortedListing.toList
   }
 
@@ -128,12 +140,17 @@ class TeraInputFormatXPN extends FileInputFormat[Array[Byte], Array[Byte]] {
     override def initialize(split : InputSplit, context : TaskAttemptContext) : Unit = {
       val fileSplit = split.asInstanceOf[FileSplit]
       val p : Path = fileSplit.getPath
+      val xpn: Expand = new Expand()
       val conf: Configuration = new Configuration()
       conf.set("spark.hadoop.fs.defaultFS", "xpn:///")
       conf.set("spark.hadoop.fs.xpn.impl", "org.expand.hadoop.Expand")
+      try{
+        xpn.initialize(URI.create("xpn:///"), conf)
+      }
 
-      val fs : FileSystem = p.getFileSystem(conf)
-      in = fs.open(p)
+      // val fs : FileSystem = p.getFileSystem(conf)
+      // val fs : FileSystem = FileSystem.get(conf)
+      in = xpn.open(p)
       val start : Long = fileSplit.getStart
       // find the offset to start at a record boundary
       val reclen = TeraInputFormatXPN.RECORD_LEN
